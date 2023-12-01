@@ -22,13 +22,13 @@ async function createconfig() {
     url: 'https://ibm-client-engineering.github.io',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
-    baseUrl: '/solution-name/',
+    baseUrl: '/solution-wxo/',
 
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'ibm-client-engineering', // Usually your GitHub org/user name.
-    projectName: 'solution-name', // Usually your repo name.
+    projectName: 'solution-wxo', // Usually your repo name.
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',

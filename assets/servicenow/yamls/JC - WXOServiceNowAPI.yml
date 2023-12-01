@@ -1,0 +1,595 @@
+openapi: 3.0.1
+info:
+  title: JC - ServiceNow Table API
+  contact:
+    name: Joe Cosenza
+    email: jcosenz@us.ibm.com
+  #Still need to research/fix:
+    #1) Delete call result output on WXO - Returns empty object for success - WXO says failure
+    #2) Friendly input parameters for tableName
+    #3) bility to pass tableName parameter for composite skill when tableName is not an output from SNow
+    #4) Lookup filtering - searching for keywords etc
+    #5) Create a proper post KB schema
+  x-ibm-application-name: JC - ServiceNow Table API
+  x-ibm-application-id: JC-ServiceNowAPI
+  description: Allows you to perform create, read, update, and delete (CRUD) operations on existing ServiceNow tables
+  version: latest
+  x-ibm-application-icon: <svg width="30" height="30" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 360"><defs><style>.cls-1{fill:#f8b500;}.cls-2{fill:#231815;}</style></defs><title>JRK number</title><path class="cls-1" d="M354.6,295.5H39.4A39.4,39.4,0,0,1,0,256.1V39.4A39.4,39.4,0,0,1,39.4,0H354.6A39.4,39.4,0,0,1,394,39.4V256.1a39.4,39.4,0,0,1-39.4,39.4"/><path class="cls-2" d="M105.85,44.44h45.42V171.75c0,57.37-27.49,77.4-71.72,77.4-10.46,0-24.21-1.8-33.17-4.78l5.08-36.76a74.94,74.94,0,0,0,23.31,3.58c19.12,0,31.08-8.66,31.08-40Z"/><path class="cls-2" d="M337.15,240.18c-8.37,4.19-27.19,8.67-51.7,8.67C215.82,248.85,180,205.52,180,148.14c0-68.74,49-107,110-107,23.6,0,41.53,4.78,49.6,9l-9.26,36.16A98.32,98.32,0,0,0,292,78.81c-36.16,0-64.25,21.81-64.25,66.64,0,40.34,23.9,65.74,64.55,65.74,13.74,0,29-3,37.95-6.57Z"/></svg>
+  x-ibm-skill-type: imported
+externalDocs:
+  url: https://docs.servicenow.com/?context=CSHelp:REST-Table-API
+servers:
+  - url: https://dev213519.service-now.com/
+security:
+  - basicAuth: []
+paths:  
+  #WXO allows for query definitions (e.g. ?sysparm_display_value=true&sysparm_exclude_reference_link=true, used to toggle s show friendly values) in the path name as long as the unique operationID is applied to the skill
+  # /api/now/table/{tableName}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+  # #For this path, you must specify a table name (Incidents table = 'incident', Task table = 'sc_task', Knowlede article table = 'sn_km_mr_st_kb_knowledge')
+  # #It is reccomended that you create a specific "get" call per skill (eg: Retrieve all TASKS from Servicenow). Having the user specify the tableName is not a friendly display
+  #   get:
+  #     summary: JC - Retrieve table records from ServiceNow
+  #     description: Retrieve table records from ServiceNow
+  #     operationId: retrievetableRecords
+  #     parameters:
+  #       - name: tableName
+  #         x-ibm-label: ServiceNow Table
+  #         description: Select a table to retrieve from ServiceNow
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/tableOptions'
+  #     responses:
+  #       '200':
+  #         description: Results
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/getTable'
+  #   post:
+  #     summary: JC - Create a new table record in ServiceNow
+  #     description: Create a new table record in ServiceNow
+  #     operationId: createtableRecord
+  #     parameters:
+  #       - name: tableName
+  #         x-ibm-label: ServiceNow Table
+  #         description: Select the type of record to be created in ServiceNow
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/tableOptions'
+  #     requestBody:
+  #       content:
+  #         application/json: 
+  #           schema:
+  #             $ref: '#/components/schemas/editTable'
+  #     responses:
+  #       '201':
+  #         description: Record created
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/getthisTable'
+  #All KBs table
+  /api/now/table/sn_km_mr_st_kb_knowledge?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+    get:
+      summary: JC - Retrieve all KBs from ServiceNow
+      description: Retrieve all KBs from ServiceNow
+      operationId: retrieveKBs
+      responses:
+        '200':
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getKBs'
+    # post:
+    #   summary: JC - Create a new KB in ServiceNow
+    #   description: Create a new KB in ServiceNow
+    #   operationId: createKB
+    #   requestBody:
+    #     content:
+    #       application/json: 
+    #         schema:
+    #           $ref: '#/components/schemas/editKB'
+    #   responses:
+    #     '201':
+    #       description: KB created
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/getsingleKB'
+  #All Tasks table
+  /api/now/table/sc_task?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+    get:
+      summary: JC - Retrieve all Tasks from ServiceNow
+      description: Retrieve all Tasks from ServiceNow
+      operationId: retrieveTasks
+      responses:
+        '200':
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTable'
+    post:
+      summary: JC - Create a new Task in ServiceNow
+      description: Create a new Task in ServiceNow
+      operationId: createTask
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              $ref: '#/components/schemas/editTable'
+      responses:
+        '201':
+          description: KB created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getthisTable'
+  #All Incidents table
+  /api/now/table/incident?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+    get:
+      summary: JC - Retrieve all Incidents from ServiceNow
+      description: Retrieve all Incidents from ServiceNow
+      operationId: retrieveIncidents
+      responses:
+        '200':
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTable'
+    post:
+      summary: JC - Create a new Incident in ServiceNow
+      description: Create a new Incident in ServiceNow
+      operationId: createIncident
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              $ref: '#/components/schemas/editTable'
+      responses:
+        '201':
+          description: KB created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTable'
+ #Composite skills - Use as the second step from the aboce skills in the skill flow so the user can select a table and retrieve the sys_id from the response
+  #Any table (tableName required as input parameter)
+  # /api/now/table/{tableName}/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+  #This path where user defines tableName will not work in WXO unless {tableName} can be passed as a parameter when it is not a skill output
+  #   get:
+  #     summary: JC - Retrieve a specific Record in ServiceNow
+  #     description: Composite Skill - Record a specific record in ServiceNow
+  #     operationId: retrievespecificRecord
+  #     parameters:
+  #       - name: tableName
+  #         x-ibm-label: ServiceNow Table
+  #         description: Select a table to retrieve from ServiceNow
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/tableOptions'
+  #       - name: sys_id
+  #         x-ibm-label: ServiceNow SysID (hidden)
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/sysID'
+  #     responses:
+  #       '200':
+  #         description: ok
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/getthisTable'    
+  #   put:
+  #     summary: JC - Modify a specific record in ServiceNow
+  #     description: Composite Skill - Modify a specific record in ServiceNow
+  #     operationId: modifyspecificRecord
+  #     parameters:
+  #       - name: tableName
+  #         x-ibm-label: ServiceNow Table
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/tableOptions'
+  #       - name: sys_id
+  #         x-ibm-label: ServiceNow SysID (hidden)
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/sysID'
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/editTable'          
+  #     responses:
+  #       '200':
+  #         description: Record updated
+  #         content:
+  #           application/json: 
+  #             schema:
+  #               $ref: '#/components/schemas/getthisTable'
+  #   delete:
+  #     summary: JC - Delete a specific record in ServiceNow
+  #     description: Composite Skill - Delete a specific record in ServiceNow
+  #     operationId: deletespecificRecord
+  #     parameters:
+  #       - name: tableName
+  #         x-ibm-label: ServiceNow Table
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/tableOptions'
+  #       - name: sys_id
+  #         x-ibm-label: ServiceNow SysID (hidden)
+  #         in: path
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/sysID'
+  #     responses:
+  #       '204':
+  #         description: Record deleted
+  #         content:
+  #           application/json: 
+  #             schema:
+  #               x-ibm-label: Record delted
+  #               type: object
+  #       '404':
+  #         description: Record not found
+  #         content:
+  #           application/json: 
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 error:
+  #                   type: object
+  #                   properties:
+  #                     message:
+  #                       type: string
+  #Task table
+  /api/now/table/sc_task/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+    get:
+      summary: JC - Retrieve a specific Task in ServiceNow (Composite only)
+      description: Composite Skill - Retrieve a Task record in ServiceNow
+      operationId: retrievethisTask
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getthisTable'    
+    put:
+      summary: JC - Modify a specific Task in ServiceNow (Composite only)
+      description: Composite Skill - Modify a specific Task in ServiceNow
+      operationId: modifythisTask
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editTable'          
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/getthisTable'
+    delete:
+    #For all deletes, they currently fail in WXO but successfully deletes the record on in SNow
+      summary: JC - Delete a specific record in ServiceNow (Composite only)
+      description: Composite Skill - Delete a specific record in ServiceNow
+      operationId: deletethisTask
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      responses:
+        '204':
+          description: Record deleted
+          content:
+            application/json: 
+              schema:
+                x-ibm-label: Record delted
+                type: object
+        '404':
+          description: Record not found
+          content:
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  #Incident Table
+  /api/now/table/incident/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+    get:
+      summary: JC - Retrieve a specific Incident in ServiceNow (Composite only)
+      description: Composite Skill - Retrieve a Incident record in ServiceNow
+      operationId: retrievethisIncident
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getthisTable'    
+    put:
+      summary: JC - Modify a specific Incident in ServiceNow (Composite only)
+      description: Composite Skill - Modify a specific Incident in ServiceNow
+      operationId: modifythisIncident
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editTable'          
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/getthisTable'
+    delete:
+      summary: JC - Delete a specific Incident in ServiceNow (Composite only)
+      description: Composite Skill - Delete a specific Incident in ServiceNow
+      operationId: deletethisIncident
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      responses:
+        '204':
+          description: Record deleted
+          content:
+            application/json: 
+              schema:
+                x-ibm-label: Record delted
+                type: object
+        '404':
+          description: Record not found
+          content:
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  /api/now/table/sn_km_mr_st_kb_knowledge/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+    get:
+      summary: JC - Retrieve a specific KB in ServiceNow (Composite only)
+      description: Composite Skill - Retrieve a specific KB in ServiceNow
+      operationId: retrievethisKB
+      parameters:
+        - name: sys_id
+          x-ibm-label: ServiceNow SysID (hidden)
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/sysID'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getsingleKB'
+    # delete:
+    #Don't want to delete KBs yet
+    #   summary: JC - Delete a specific KB in ServiceNow
+    #   description: Composite Skill - Delete a specific KB in ServiceNow
+    #   operationId: deketethisKB
+    #   parameters:
+    #     - name: sys_id
+    #       x-ibm-label: ServiceNow SysID (hidden)
+    #       in: path
+    #       required: true
+    #       schema:
+    #         $ref: '#/components/schemas/sysID'
+    #   responses:
+    #     '204':
+    #       description: Record deleted
+    #       content:
+    #         application/json: 
+    #           schema:
+    #             x-ibm-label: Record delted
+    #             type: object
+    #     '404':
+    #       description: Record not found
+    #       content:
+    #         application/json: 
+    #           schema:
+    #             type: object
+    #             properties:
+    #               error:
+    #                 type: object
+    #                 properties:
+    #                   message:
+    #                     type: string
+components:
+  schemas:
+    tableOptions:
+      type: string
+      #enums can be set in WXO - Unfriendly names - used for when user needs to specify the tableName
+      # enum:
+      #  - 'sc_task'
+      #  - 'incident'
+    sysID:
+    #sysID is a required output for composite skills, not shown to user in table
+      x-ibm-show: false
+      type: string
+    getthisTable:
+    #Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
+      type: object
+      properties:
+        result:
+          x-ibm-label: Results
+          type: object
+          properties:
+              sys_id:
+                $ref: '#/components/schemas/sysID'
+              opened_at:
+                type: string
+              assignment_group:
+                type: string
+              assigned_to:
+                type: string
+              urgency:
+                type: string
+              opened_by:
+                type: string
+              state:
+                type: string
+              description:
+                type: string
+              short_description:
+                type: string
+              number:
+                type: string
+    getsingleKB:
+      type: object
+      properties:
+        result:
+          x-ibm-label: Results
+          type: object
+          properties:
+              sys_id:
+                $ref: '#/components/schemas/sysID'
+              last_updated_on:
+                type: string
+              content:
+                type: string
+              author:
+                type: string
+              short_description:
+                type: string
+              number:
+                type: string
+    getKBs:
+      type: object
+      properties:
+        result:
+          x-ibm-label: Knowledge Articles
+          type: array
+          items:
+            type: object
+            properties:
+              sys_id:
+                $ref: '#/components/schemas/sysID'
+              last_updated_on:
+                type: string
+              content:
+                type: string
+              author:
+                type: string
+              short_description:
+                type: string
+              number:
+                type: string
+    #Use for multiple table results (skills like Get all Tasks and Get all Incidents)
+    getTable:
+      type: object
+      properties:
+        result:
+          x-ibm-label: Results
+          type: array
+          items:
+            type: object
+            properties:
+              sys_id:
+                $ref: '#/components/schemas/sysID'
+              opened_at:
+                type: string
+              assignment_group:
+                type: string
+              assigned_to:
+                type: string
+              urgency:
+                type: string
+              opened_by:
+                  type: string
+              state:
+                type: string
+              description:
+                type: string
+              short_description:
+                type: string
+              number:
+                type: string
+    editTable:
+      type: object
+      properties:
+        short_description:
+          x-ibm-label: Short Description
+          type: string
+          description: 'Short description of the record'
+        description:
+          x-ibm-label: Description
+          x-ibm-multiline: true
+          type: string
+          description: 'Detailed description of the record'
+        urgency:
+          x-ibm-label: Urgency
+          type: integer
+          description: '3 - Low, 2 - Medium, 1 - High'
+          enum:
+            - 3
+            - 2
+            - 1
+    # editKB:
+    #   type: object
+    #   properties:
+    #     short_description:
+    #       x-ibm-label: Short Description
+    #       type: string
+    #       description: 'Short description of the record'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
