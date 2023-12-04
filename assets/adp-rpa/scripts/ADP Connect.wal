@@ -1,0 +1,145 @@
+//File reading and input variables
+defVar --name inputfileReader --type TextFileReader
+defVar --name filesLocation --type String
+defVar --name outputLocation --type String
+defVar --name adpURL --type String
+defVar --name ADPusername --type String
+defVar --name ADPpassword --type String
+defVar --name ADPprojectID --type String
+defVar --name userInput --type String
+//Path variables
+defVar --name inputFilePaths --type List --innertype String
+defVar --name filepath --type String
+defVar --name filename --type String
+defVar --name outputString --type String
+//ADP connector variables
+defVar --name encodedAuth --type String
+defVar --name authHeaders --type StringDictionary --innertype String
+defVar --name response --type String
+defVar --name token --type String
+defVar --name fileContent --type HttpContent
+defVar --name jsonContent --type HttpContent
+defVar --name multiContent --type HttpContent
+defVar --name jsonOptions --type HttpContent
+defVar --name analyzerId --type String
+defVar --name pollingIndex --type Numeric --value 0
+defVar --name pollStatus --type String
+defVar --name classification --type String
+defVar --name classificationConfidence --type String
+defVar --name kvpList --type String
+defVar --name table --type DataTable
+defVar --name rows --type Numeric
+defVar --name columns --type Numeric
+defVar --name kvpTableIndex --type Numeric --value 1
+defVar --name key --type String
+defVar --name valueJson --type String
+defVar --name jsonValueTable --type DataTable
+defVar --name valueTableIndex --type Numeric --value 1
+defVar --name kvpValue --type String
+defVar --name confidence --type String
+defVar --name logOutput --type String
+defVar --name statusCode --type Numeric
+defVar --name sendFileHeaders --type StringDictionary --innertype String
+defVar --name pollRequestHeaders --type StringDictionary --innertype String
+defVar --name retrieveJsonHeaders --type StringDictionary --innertype String
+//Get input file from user
+selectFile --title "Please provide the input text file" --filter "*.txt" userInput=filepath
+//Assign Variables
+openTextReader --share "None" --path "${userInput}" --encoding "Default" inputfileReader=value
+textReadLine --linenumber 1 --file ${inputfileReader} filesLocation=value
+textReadLine --linenumber 2 --file ${inputfileReader} outputLocation=value
+textReadLine --linenumber 3 --file ${inputfileReader} adpURL=value
+textReadLine --linenumber 4 --file ${inputfileReader} ADPusername=value
+textReadLine --linenumber 5 --file ${inputfileReader} ADPpassword=value
+textReadLine --linenumber 6 --file ${inputfileReader} ADPprojectID=value
+//Encode username and password
+textToBase64 --source "${ADPusername}:${ADPpassword}" --encoding "UTF8" encodedAuth=value
+strDictAdd --key Authorization --value "Basic ${encodedAuth}" --dictionary ${authHeaders}
+strDictAdd --key "Content-Type" --value "application/x-www-form-urlencoded" --dictionary ${authHeaders}
+//Get files from file location
+getFiles --path "${filesLocation}" --recursive  --orderbylastmodification  inputFilePaths=value
+foreach --collection "${inputFilePaths}" --variable "${filepath}"
+	//Clear headers for current run
+	strDictRemove --key Authorization --dictionary ${sendFileHeaders}
+	strDictRemove --key Authorization --dictionary ${pollRequestHeaders}
+	strDictRemove --key Authorization --dictionary ${retrieveJsonHeaders}
+	logMessage --message "${filepath}" --type "Info"
+	getFileInfo --path "${filepath}" filename=name
+	//Obtain zen api token using login credentials
+	logMessage --message "Obtaining zen bearer token..." --type "Info"
+	httpRequest --verb "Get" --url "${adpURL}/v1/preauth/validateAuth" --headers ${authHeaders} --noproxy  response=value statusCode=statusCode
+	mapJson --handleError  --json "${response}" --mappings "accessToken=${token}"
+	if --left "${statusCode}" --operator "Equal_To" --right 200
+		logMessage --message "Login Successful ${statusCode}" --type "Info"
+		//Add Token to request headers
+		logMessage --message "Adding token to request headers..." --type "Info"
+		strDictAdd --key Authorization --value "Bearer ${token}" --dictionary ${sendFileHeaders}
+		strDictAdd --key Authorization --value "Bearer ${token}" --dictionary ${pollRequestHeaders}
+		strDictAdd --key Authorization --value "Bearer ${token}" --dictionary ${retrieveJsonHeaders}
+		
+		//Create http content for file send
+		logMessage --message "Creating request content..." --type "Info"
+		createHttpContent --formattype "Bytes" --file "${filepath}" fileContent=value
+		createHttpContent --formattype "Json" --body "\"json\"" jsonContent=value
+		createHttpContent --formattype "Json" --body "\"kvp\", \"dc\"" jsonOptions=value
+		createHttpContent --formattype "Multipart" --contentlist "{\"file\":\"${fileContent}\",\"responseType\":\"${jsonContent}\",\"jsonOptions\":\"${jsonOptions}\"}" multiContent=value
+		
+		//Send doc to adp
+		logMessage --message "Sending document to ADP..." --type "Info"
+		httpRequest --verb "Post" --url "${adpURL}/adp/aca/v1/projects/${ADPprojectID}/analyzers" --headers ${sendFileHeaders} --formatter "Instance" --source "${multiContent}" --noproxy  response=value
+		mapJson --json "${response}" --mappings "{\"result[0].data.analyzerId\":\"${analyzerId}\"}"
+		logMessage --message "ADP has received document\r\nAnalyzer ID: ${analyzerId}" --type "Info"
+		
+		//Begin Polling
+		logMessage --message "Polling started..." --type "Info"
+		for --variable ${pollingIndex} --from 0 --to 7 --step 1
+			delay --timeout "00:00:05"
+			httpRequest --verb "Get" --url "${adpURL}/adp/aca/v1/projects/${ADPprojectID}/analyzers/${analyzerId}" --headers ${pollRequestHeaders} --noproxy  response=value
+			mapJson --json "${response}" --mappings "{\"result[0].data.statusDetails[0].status\":\"${pollStatus}\"}"
+			logMessage --message "Poll Results: ${pollStatus}" --type "Info"
+			if --left "${pollStatus}" --operator "Equal_To" --right Completed
+				logMessage --message "File Processing Complete!" --type "Info"
+				break
+			endIf
+		next
+		
+		//Retrieve Json for document
+		logMessage --message "Retrieving Json Payload..." --type "Info"
+		httpRequest --verb "Get" --url "${adpURL}/adp/aca/v1/projects/${ADPprojectID}/analyzers/${analyzerId}/json" --headers ${retrieveJsonHeaders} --noproxy  response=value
+		mapJson --handleError  --json "${response}" --mappings "{\"result[0].data.Classification.DocumentClass.Actual\":\"${classification}\",\"result[0].data.Classification.DocumentClass.ClassMatch\":\"${classificationConfidence}\",\"result[0].data.KeyClassRankedList\":\"${kvpList}\"}"
+		logMessage --message "Processing json payload..." --type "Info"
+		logMessage --message "\r\nDocument Classification: ${classification}\r\nClassification Confidence: ${classificationConfidence}\r\n\r\n" --type "Info"
+		appendLineToText --text "${outputString}" --value "Document Classification: ${classification}" outputString=value
+		appendLineToText --text "${outputString}" --value "Document Classification Confidence: ${classificationConfidence}" outputString=value
+		appendLineToText --text "${outputString}" --value "----------------------------------------------------------------------" outputString=value
+		
+		//Process Json Payload
+		jsonToTable --json "${kvpList}" --jsonPath "$" jsonValueTable=value
+		jsonToTable --handleError  --json "${kvpList}" --jsonPath "$" table=value rows=rows columns=columns
+		for --variable ${kvpTableIndex} --from 1 --to ${rows} --step 1
+			//Process Keys
+			mapTableRow --dataTable ${table} --row ${kvpTableIndex} --mappings "[{\"Name\":null,\"Number\":\"2\",\"Output\":\"${key}\"}]"
+			mapTableRow --dataTable ${table} --row ${kvpTableIndex} --mappings "[{\"Name\":null,\"Number\":\"4\",\"Output\":\"${valueJson}\"}]"
+			jsonToTable --json "${valueJson}" --jsonPath "$" jsonValueTable=value
+			logMessage --message "Key: ${key}" --type "Info"
+			appendLineToText --text "${outputString}" --value "Key: ${key}" --comment "Add the Key row to the output file" outputString=value
+			//Process Values
+			for --variable ${valueTableIndex} --from 1 --to ${jsonValueTable.Rows} --step 1
+				mapTableRow --dataTable ${jsonValueTable} --row ${valueTableIndex} --mappings "[{\"Name\":null,\"Number\":\"3\",\"Output\":\"${kvpValue}\"},{\"Name\":null,\"Number\":\"4\",\"Output\":\"${confidence}\"}]"
+				if --left "${confidence}" --operator "Equal_To" --right 0
+					setVar --name "${kvpValue}" --value "Value Not Found!"
+				endIf
+				logMessage --message "${valueTableIndex}:        Value: ${kvpValue}   Confidence: ${confidence}" --type "Info"
+				appendLineToText --text "${outputString}" --value "${valueTableIndex}:    Value: ${kvpValue} ; Confidence ${confidence}" outputString=value
+			next
+			appendLineToText --text "${outputString}" --value "------------------------------------------------------------------" outputString=value
+		next
+	else
+		logMessage --message "ADP Login failed. Status code ${statusCode}\r\nResponse: ${response}" --type "Error"
+		break
+	endIf
+	setVarIf --variablename "${outputString}" --value "This file is unable to be classified by ADP. Please train the ADP classification model for this type of document." --left "${outputString}" --operator "Is_Null"
+	writeToFile --value "${outputString}" --file "${outputLocation}\\${filename}.txt" --encoding "Default" --overwrite  --writeasnewline
+	writeToFile --value "${filename}\r\n${outputString}" --file "${outputLocation}\\CombinedResults.txt" --encoding "Default" --writeasnewline
+	
+endFor
