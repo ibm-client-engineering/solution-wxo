@@ -12,11 +12,12 @@ Before we can use the newly imported skills, they must be "enhanced" in order to
   2. Click the output tab
   3. Click "edit response"
   4. Fill in the proper "friendly name" for each collumn for the results output
+
 :::warning
 The last coullumn in some skils will be "Empty". This is used to output the ServiceNow "sysID" for composite skills without exposing the value to the user. Leave the header for "Empty" in the output table blank.
 :::
 
-Example:
+##### Example:
 
 | Number | Short Description | State | Opened By | Urgency | Assigned to | Assignment Group | Opened at | |
 |---|---|---|---|---|---|---|---|---|

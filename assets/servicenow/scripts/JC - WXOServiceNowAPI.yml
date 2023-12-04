@@ -123,7 +123,7 @@ paths:
               $ref: '#/components/schemas/editTable'
       responses:
         '201':
-          description: KB created
+          description: Task created
           content:
             application/json:
               schema:
@@ -152,7 +152,7 @@ paths:
               $ref: '#/components/schemas/editTable'
       responses:
         '201':
-          description: KB created
+          description: Incident created
           content:
             application/json:
               schema:

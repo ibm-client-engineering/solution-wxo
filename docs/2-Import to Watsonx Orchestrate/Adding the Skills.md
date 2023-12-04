@@ -4,7 +4,7 @@ sidebar_position: 3
 title: Adding the Skills
 ---
 
-Now we can add the skills from the skill catalog, and connect the app:
+Add the skills from the skill catalog, and connect the app:
 1. From the home screen, towards the bottom, click the "Add skills from the catalog" box
 2. Find "JC - ServiceNow API" from the list
 3. Connect the app
