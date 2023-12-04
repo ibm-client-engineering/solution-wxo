@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: JC - ServiceNow Table API
+  title: JC - Watsonx Orchestrate ServiceNow API
   contact:
     name: Joe Cosenza
     email: jcosenz@us.ibm.com

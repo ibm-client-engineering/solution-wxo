@@ -24,6 +24,17 @@ externalDocs:
 servers:
   - url: https://dev213519.service-now.com/
 ```
+A great resource to [help with the API rules of ServiceNow](https://docs.servicenow.com/?context=CSHelp:REST-Table-API)
+```yaml
+externalDocs:
+  url: https://docs.servicenow.com/?context=CSHelp:REST-Table-API
+```
+#### Server URL
+This URL needs to be set <strong>for the instance you are planning on using</strong>. This is an example instance with its own username/password combination for the REST API user. When you create your own instance, update the URL here.
+```yaml
+servers:
+  - url: https://dev213519.service-now.com/
+```
 
 #### Security
 
@@ -79,13 +90,47 @@ Each skill on Watsonx Orchestrate is done by defining an API call. It is reccome
               $ref: '#/components/schemas/editTable'
 ```
 
+### Request Body
+Request bodies define the content to be sent to Servicenow
+
+```yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editTable'     
+```
+The editTable schema defines the properties of the request body when creating a new task:
+```yaml
+    editTable:
+      type: object
+      properties:
+        short_description:
+          x-ibm-label: Short Description
+          type: string
+          description: 'Short description of the record'
+        description:
+          x-ibm-label: Description
+          x-ibm-multiline: true
+          type: string
+          description: 'Detailed description of the record'
+        urgency:
+          x-ibm-label: Urgency
+          type: integer
+          description: '3 - Low, 2 - Medium, 1 - High'
+          enum:
+            - 3
+            - 2
+            - 1
+```
+
 ### Responses
 The responses from ServiceNow reference a schema to give only the wanted information
 
 ```yaml
       responses:
         '201':
-          description: KB created
+          description: Task created
           content:
             application/json:
               schema:
@@ -121,39 +166,6 @@ The responses from ServiceNow reference a schema to give only the wanted informa
                 type: string
               number:
                 type: string
-```
-### Request Body
-Request bodies define the content to be sent to Servicenow
-
-```yaml
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/editTable'     
-```
-The editTable schema defines the properties of the request body when creating a new task:
-```yaml
-    editTable:
-      type: object
-      properties:
-        short_description:
-          x-ibm-label: Short Description
-          type: string
-          description: 'Short description of the record'
-        description:
-          x-ibm-label: Description
-          x-ibm-multiline: true
-          type: string
-          description: 'Detailed description of the record'
-        urgency:
-          x-ibm-label: Urgency
-          type: integer
-          description: '3 - Low, 2 - Medium, 1 - High'
-          enum:
-            - 3
-            - 2
-            - 1
 ```
 
 ### Composite Skills
