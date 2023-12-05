@@ -44,7 +44,7 @@ WXO name "JC - Create a new Incident in ServiceNow"
 ### Composite Skills
 
 :::info
-All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow directly after one of the above "Top Level Skills". These skills will <strong>not work</strong> as a first step or by direct usage in Watsonx Orchestrate. This is because the ServiceNow sysID is a required parameter which is a hidden input. See [Creating Composite Skills](/solution-wxo/Import%20to%20Watsonx%20Orchestrate/compositeskills).
+All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow directly after one of the above "Top Level Skills". These skills will <strong>not work</strong> as a first step or by direct usage in Watsonx Orchestrate. This is because the ServiceNow sysID is a required parameter which is a hidden input. See [Creating Composite Skills](/ImporttoWXO/compositeskills#composite-skills).
 :::
 
 

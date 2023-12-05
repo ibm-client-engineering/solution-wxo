@@ -18,8 +18,8 @@ Add the skills from the skill catalog, and connect the application:
 The skills should now be added to your catalog under "JC - Watsonx Orchestrate ServiceNow API" and ready for use directly or in a composite Skill flow.
 
 :::note
-All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow. Only the [Top Level Skills](/Getting%20Started/skills/#top-level-skills) will work immediately
+All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow. Only the [Top Level Skills](/GettingStarted/skills#top-level-skills) will work immediately
 :::
 :::tip
-Be sure to add all the skills you need! You will not be able to make a [Composite Skill](compositeskills#composite-skills) without adding the necessary skills first.
+Be sure to add all the skills you need! You will not be able to make a [Composite Skill](/ImporttoWXO/compositeskills#composite-skills) without adding the necessary skills first.
 :::
