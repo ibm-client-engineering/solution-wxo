@@ -1,0 +1,346 @@
+---
+id: outputs
+sidebar_position: 2
+title: Sample Outputs
+---
+## ServiceNow Outputs and their Output Schemas
+Sample outputs of SerciceNow responses. Use these for reference when building response schemas in the yaml.
+
+Reference your instance's REST API Explorer to test calls and their outputs:
+https://YOUR_INSTANCE_NAME_HERE.service-now.com/now/nav/ui/classic/params/target/%24restapi.do
+
+#### ServiceNow API Name: Table API
+
+All of the following outputs assume both of these ServiceNow queries to be true:
+
+`sysparm_display_value = true`
+
+`sysparm_exclude_reference_link = true`
+
+These are added to the path by appending this to the url in all paths:
+
+`?sysparm_display_value=true&sysparm_exclude_reference_link=true`
+
+### Single table outputs
+These are outputs from SeriviceNow that show a single table item. Single table outputs are made up of a single results object, with nested objects inside.
+Sys_ID is a required parameter, so these are composite skills.
+
+<details>
+<summary><b>Sample get a single Task ServiceNow output</b></summary>
+
+```json
+{
+  "result": {
+    "parent": "",
+    "made_sla": "true",
+    "watch_list": "",
+    "sc_catalog": "",
+    "upon_reject": "Cancel all future Tasks",
+    "sys_updated_on": "2023-11-21 17:04:19",
+    "task_effective_number": "SCTASK0010005",
+    "approval_history": "",
+    "number": "SCTASK0010005",
+    "sys_updated_by": "admin",
+    "opened_by": "System Administrator",
+    "user_input": "",
+    "sys_created_on": "2023-11-21 17:04:19",
+    "sys_domain": "global",
+    "state": "Open",
+    "route_reason": "",
+    "sys_created_by": "admin",
+    "knowledge": "false",
+    "order": "",
+    "calendar_stc": "",
+    "closed_at": "",
+    "cmdb_ci": "",
+    "delivery_plan": "",
+    "contract": "",
+    "impact": "3 - Low",
+    "active": "true",
+    "work_notes_list": "",
+    "business_service": "",
+    "priority": "4 - Low",
+    "sys_domain_path": "/",
+    "time_worked": "",
+    "expected_start": "",
+    "opened_at": "2023-11-21 17:04:19",
+    "business_duration": "",
+    "group_list": "",
+    "work_end": "",
+    "approval_set": "",
+    "work_notes": "",
+    "universal_request": "",
+    "request": "",
+    "short_description": "",
+    "correlation_display": "",
+    "delivery_task": "",
+    "work_start": "2023-11-21 17:04:19",
+    "assignment_group": "",
+    "additional_assignee_list": "",
+    "description": "",
+    "calendar_duration": "",
+    "close_notes": "",
+    "service_offering": "",
+    "sys_class_name": "Catalog Task",
+    "closed_by": "",
+    "follow_up": "",
+    "sys_id": "45bba99f93263110017276718bba104a",
+    "contact_type": null,
+    "urgency": "3 - Low",
+    "company": "",
+    "reassignment_count": "0",
+    "activity_due": "UNKNOWN",
+    "assigned_to": "",
+    "comments": "",
+    "approval": "Not Yet Requested",
+    "sla_due": "UNKNOWN",
+    "comments_and_work_notes": "",
+    "due_date": "",
+    "sys_mod_count": "0",
+    "request_item": "",
+    "sys_tags": "",
+    "cat_item": "",
+    "escalation": "Normal",
+    "upon_approval": "Proceed to Next Task",
+    "correlation_id": "",
+    "location": ""
+  }
+}
+```
+</details>
+
+:::tip
+The output schema cam be modified to show/hide any information recieved from ServiceNow. These example Output Schemas are currently in use in the Watsonx Orchestrate ServiceNow API
+:::
+<details>
+<summary><b>Output Schema</b></summary>
+
+```yaml
+getthisTable: #Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
+  type: object
+  properties:
+    result:
+      x-ibm-label: Results
+      type: object
+      properties:
+          sys_id:
+            $ref: '#/components/schemas/sysID'
+          opened_at:
+            type: string
+          assignment_group:
+            type: string
+          assigned_to:
+            type: string
+          urgency:
+            type: string
+          opened_by:
+            type: string
+          state:
+            type: string
+          description:
+            type: string
+          short_description:
+            type: string
+          number:
+            type: string
+```
+</details>
+
+### Multi table outputs
+These are outputs that show a list of table items as opposed to a single table item. Multi table outputs are enclosed in a <strong>results array</strong>
+
+<details>
+<summary><b>Sample get all Incidents ServiceNow output</b></summary>
+
+```json
+{
+  "result": [
+    {
+      "parent": "",
+      "made_sla": "true",
+      "caused_by": "",
+      "watch_list": "",
+      "upon_reject": "Cancel all future Tasks",
+      "sys_updated_on": "2016-12-13 18:46:44",
+      "child_incidents": "0",
+      "hold_reason": "",
+      "origin_table": "",
+      "task_effective_number": "INC0000060",
+      "approval_history": "",
+      "number": "INC0000060",
+      "resolved_by": "David Loo",
+      "sys_updated_by": "employee",
+      "opened_by": "Joe Employee",
+      "user_input": "",
+      "sys_created_on": "2016-12-12 07:19:57",
+      "sys_domain": "global",
+      "state": "Closed",
+      "route_reason": "",
+      "sys_created_by": "employee",
+      "knowledge": "false",
+      "order": "",
+      "calendar_stc": "102,197",
+      "closed_at": "2016-12-13 18:46:44",
+      "cmdb_ci": "Storage Area Network 001",
+      "delivery_plan": "",
+      "contract": "",
+      "impact": "2 - Medium",
+      "active": "false",
+      "work_notes_list": "",
+      "business_service": "Email",
+      "business_impact": "",
+      "priority": "3 - Moderate",
+      "sys_domain_path": "/",
+      "rfc": "",
+      "time_worked": "",
+      "expected_start": "",
+      "opened_at": "2016-12-12 07:19:57",
+      "business_duration": "8 Hours",
+      "group_list": "",
+      "work_end": "",
+      "caller_id": "Joe Employee",
+      "reopened_time": "",
+      "resolved_at": "2016-12-13 13:43:14",
+      "approval_set": "",
+      "subcategory": "Email",
+      "work_notes": "2016-12-12 16:56:57 - Beth Anglin (Work notes)\nUpdating priority as workaround for incident has been provided.\n\n2016-12-12 09:57:00 - Beth Anglin (Work notes)\nIncreasing priority as this incident is affecting more number of users\n\n2016-12-12 09:01:24 - Beth Anglin (Work notes)\nUpdating incident with correct Configuration item\n\n",
+      "universal_request": "",
+      "short_description": "Unable to connect to email",
+      "close_code": "Solved (Permanently)",
+      "correlation_display": "",
+      "delivery_task": "",
+      "work_start": "",
+      "assignment_group": "Network",
+      "additional_assignee_list": "",
+      "business_stc": "28,800",
+      "cause": "",
+      "description": "I am unable to connect to the email server. It appears to be down.",
+      "origin_id": "",
+      "calendar_duration": "1 Day 4 Hours 23 Minutes",
+      "close_notes": "This incident is resolved.",
+      "notify": "Do Not Notify",
+      "service_offering": "",
+      "sys_class_name": "Incident",
+      "closed_by": "Joe Employee",
+      "follow_up": "",
+      "parent_incident": "",
+      "sys_id": "1c741bd70b2322007518478d83673af3",
+      "contact_type": "Self-service",
+      "reopened_by": "",
+      "incident_state": "Closed",
+      "urgency": "2 - Medium",
+      "problem_id": "",
+      "company": "ACME North America",
+      "reassignment_count": "2",
+      "activity_due": "2016-12-12 17:26:36",
+      "assigned_to": "David Loo",
+      "severity": "3 - Low",
+      "comments": "2016-12-13 12:30:14 - Joe Employee (Additional comments)\nHi David, \nThat must be it. I was on phone calls at all three of those times and must not have had any activity on my computer. Please close this incident.\n\n2016-12-13 10:42:25 - David Loo (Additional comments)\nHi Joe,\nI've checked in network logs and you were timed out from the VPN at 9:25AM, 10:42AM and 2:28PM. These three times coincide with entries in the exchange server logs showing you lost connection at those same times. The VPN policy is to time out a connection if it hasn't been active in 30 minutes. Please ensure the next time you lose connectivity you are still connected to the VPN.\n\nI'm going to update this incident to resolved. Please let me know if you need any more assistance.\n\n2016-12-13 07:53:01 - Joe Employee (Additional comments)\nHi David,\nThank you! I use the corporate VPN and was also unable to connect to the email server at 9:30AM and 10:45AM.\n\n2016-12-13 06:43:17 - David Loo (Additional comments)\nHi Joe,\nMy name is David. I'll be assisting you with this incident. Can you confirm which VPN you have been using today? I also see you were having this issue at 2:30PM. Were there any other times you can recall you had issues connecting to the email?\n\n2016-12-12 16:56:57 - Beth Anglin (Additional comments)\nHi Joe, \nAs per discussion on call, Workaround has been provided and it has worked for you. I have verified with the Exchange team we haven't had an issue with the email server today. I'm going to assign this issue to the network team for further investigation.\n\n2016-12-12 12:43:50 - Joe Employee (Additional comments)\nHi Beth,\nYes, I'm connected to the VPN, although I've had to reconnect to it a couple of times. The last time I was unable to connect was 2:30PM.\n\n2016-12-12 10:52:42 - Beth Anglin (Additional comments)\nHi Joe, \nAre you connected to the VPN when you're having this issue? Can you identify a specific time you were unable to connect to email?\n\n2016-12-12 08:30:49 - Beth Anglin (Additional comments)\nHi Joe, \nMy name is Beth and I'll be assisting you with your issue.\n\n2016-12-12 07:19:57 - Joe Employee (Additional comments)\nI am unable to connect to the email server. It appears to be down.\n\n",
+      "approval": "Not Yet Requested",
+      "sla_due": "UNKNOWN",
+      "comments_and_work_notes": "2016-12-13 12:30:14 - Joe Employee (Additional comments)\nHi David, \nThat must be it. I was on phone calls at all three of those times and must not have had any activity on my computer. Please close this incident.\n\n2016-12-13 10:42:25 - David Loo (Additional comments)\nHi Joe,\nI've checked in network logs and you were timed out from the VPN at 9:25AM, 10:42AM and 2:28PM. These three times coincide with entries in the exchange server logs showing you lost connection at those same times. The VPN policy is to time out a connection if it hasn't been active in 30 minutes. Please ensure the next time you lose connectivity you are still connected to the VPN.\n\nI'm going to update this incident to resolved. Please let me know if you need any more assistance.\n\n2016-12-13 07:53:01 - Joe Employee (Additional comments)\nHi David,\nThank you! I use the corporate VPN and was also unable to connect to the email server at 9:30AM and 10:45AM.\n\n2016-12-13 06:43:17 - David Loo (Additional comments)\nHi Joe,\nMy name is David. I'll be assisting you with this incident. Can you confirm which VPN you have been using today? I also see you were having this issue at 2:30PM. Were there any other times you can recall you had issues connecting to the email?\n\n2016-12-12 16:56:57 - Beth Anglin (Work notes)\nUpdating priority as workaround for incident has been provided.\n\n2016-12-12 16:56:57 - Beth Anglin (Additional comments)\nHi Joe, \nAs per discussion on call, Workaround has been provided and it has worked for you. I have verified with the Exchange team we haven't had an issue with the email server today. I'm going to assign this issue to the network team for further investigation.\n\n2016-12-12 12:43:50 - Joe Employee (Additional comments)\nHi Beth,\nYes, I'm connected to the VPN, although I've had to reconnect to it a couple of times. The last time I was unable to connect was 2:30PM.\n\n2016-12-12 10:52:42 - Beth Anglin (Additional comments)\nHi Joe, \nAre you connected to the VPN when you're having this issue? Can you identify a specific time you were unable to connect to email?\n\n2016-12-12 09:57:00 - Beth Anglin (Work notes)\nIncreasing priority as this incident is affecting more number of users\n\n2016-12-12 09:01:24 - Beth Anglin (Work notes)\nUpdating incident with correct Configuration item\n\n2016-12-12 08:30:49 - Beth Anglin (Additional comments)\nHi Joe, \nMy name is Beth and I'll be assisting you with your issue.\n\n2016-12-12 07:19:57 - Joe Employee (Additional comments)\nI am unable to connect to the email server. It appears to be down.\n\n",
+      "due_date": "",
+      "sys_mod_count": "15",
+      "reopen_count": "0",
+      "sys_tags": "",
+      "escalation": "Normal",
+      "upon_approval": "Proceed to Next Task",
+      "correlation_id": "",
+      "location": "",
+      "category": "Inquiry / Help"
+    }
+  ]
+}
+```
+</details>
+<details>
+<summary><b>Output Schema</b></summary>
+
+```yaml
+getTable: #Use for multiple table results (skills like the top skills Get all Tasks and Get all Incidents)
+  type: object
+  properties:
+    result:
+      x-ibm-label: Results
+      type: array
+      items:
+        type: object
+        properties:
+          sys_id:
+            $ref: '#/components/schemas/sysID'
+          opened_at:
+            type: string
+          assignment_group:
+            type: string
+          assigned_to:
+            type: string
+          urgency:
+            type: string
+          opened_by:
+              type: string
+          state:
+            type: string
+          description:
+            type: string
+          short_description:
+            type: string
+          number:
+            type: string
+```
+</details>
+<details>
+<summary><b>Sample get all KBs ServiceNow Output</b></summary>
+
+```json
+{
+  "result": [
+    {
+      "short_description": "How to Deal with Spam",
+      "author": "Ron Kettering",
+      "rating": "    ",
+      "language": "",
+      "embedded_media": "",
+      "content": "<article><p><span style=\"font-size: 18pt;\"><strong>How to Deal with Spam</strong></span></p>\n<p>Spam has increasingly become a problem on the Internet. While every Internet user receives some spam, email addresses posted to web sites or in newsgroups and chat rooms attract the most spam.</p>\n<p>To reduce the amount of spam you receive:</p>\n<ul><li>Don&#39;t reply to spam</li><li>Be careful releasing your email address, and know how it will be used</li><li>Be proactive  <br /><br /></li></ul>\n<p style=\"font-size: 12pt;\"><strong>Don&#39;t reply to spam</strong></p>\n<p>If you reply to spam, the spammer or the automated program on the other end will then know that your address is connected to a live person, and the spammer will then bombard you with even more spam, and circulate your address to other spammers. It is critical that you pause and think before replying to any spam. Consider the following guidelines:</p>\n<ul><li>Setting up your email account to generate automatic responses while you are away can have the unfortunate side-effect of verifying your email address to every spammer that sends you spam. </li><li>If the message appears to come from a legitimate company, the company may have obtained your email address from some transaction between you and the company. In fact, you may have inadvertently provided your email address (e.g., if you didn&#39;t check a box marked Don&#39;t send me product updates). In these cases, it is usually safe to reply and ask to be removed from the mailing list. </li><li>If it is not a company you recognize, use your judgment. To be safe, copy and paste the link to the company&#39;s site into the browser rather than clicking it in the email message. </li><li>If the spam is clearly from a disreputable source, never respond. Do not follow the (probably bogus) unsubscribe directions. In most cases, if you never reply, the network of spammers will eventually decide your email address is a dud, and will stop using it as often.<br /><br /></li></ul>\n<p style=\"font-size: 12pt;\"><strong>Be careful releasing your email address, and know how it will be used</strong></p>\n<p>Every time you communicate on the Internet or browse a web site, there are opportunities for spammers to intercept your communications to obtain your email address and other personal information.</p>\n<p>Otherwise reputable companies may sell or exchange your email address with other companies, and this information may eventually find its way to a spammer. At worst, spammers will use automated programs to bombard these lists of email addresses with spam. Consider the following guidelines:</p>\n<ul><li>Subscribe only to essential discussion lists, and ensure that they are moderated. </li><li>Think twice before offering your email address to a web site. You may wish to check the site&#39;s privacy policy first to be sure it uses secure technology, and that the company does not share your email address with others. </li><li>If you need to list email addresses on your web site, present the addresses in a way that makes them less vulnerable to collection and abuse by spammers.</li><li>Every time you are asked for your email address verbally or on paper, think carefully about whether or not you want to receive any information from that company or organization. It is usually best to decline to provide your email address. </li><li>Whenever possible, advocate that organizations you are involved in or do business with default to the opt-in model. This requires you to specifically request to be added to their email lists, rather than the opt-out model, where they add you to email lists automatically, and then give you the option of asking to be removed. <br /><br /></li></ul>\n<p style=\"font-size: 12pt;\"><strong>Be proactive</strong></p>\n<p>Adjusting the security settings in your web browser is a good preventive measure. For a higher level of security, have your browser disallow:</p>\n<ul><li>Accepting cookies</li><li>Listing your name and other personal information in your browser profile</li><li>Filling in form fields for you</li></ul>\n<p>This will help reduce the amount of personal information transmitted to sites at the expense of full functionality, since many legitimate web sites require you to accept cookies.</p>\n<p>Do not contribute to the spam problem by producing any of it yourself! In particular, learn about chain mail and do not forward chain mail to others. Also, if you receive an email message that appears to warn of some horrible thing happening (a virus that reportedly deletes all your files, for example) or is a touching sob story (about helping to save a poor sick girl or boy, for example), be suspicious.</p>\n<p>Nearly every instance of chain mail is a hoax. The message may even come from someone you know and respect who is simply not aware that it&#39;s a hoax. Learn about hoaxes and the sites available to verify hoaxes, and do not forward them to others. <br /><br /></p>\n<p style=\"font-size: 12pt;\"><strong>Questions regarding X-rated spam (unsolicited mass e-mail)</strong></p>\n<p> Some members of the Company have at times expressed concern to IT regarding their own accountability for unsolicited e-mail of a sexual nature sent to their Company e-mail address. In some cases, an employee worries that a supervisor or co-worker might think the employee solicited the mail. In other cases, the person fears that an IT employee asked to assist with the computer might think the person had solicited the sexually-oriented mail.</p>\n<p>Most people who either have experienced spam or have read about spam understand that spammers do not wait to be asked; they are in the business of aggressive marketing. Many spammers are deceitful, trying to fool people into opening their unwanted e-mail by pretending to be someone else or using a subject line which fools the recipient into opening the mail. Sometimes they claim falsely that the person is receiving the e-mail because the person asked for it, or expressed interest in material of a similar nature. The truth is that few people welcome spam and even fewer ask for it.</p>\n<p>If a supervisor or co-worker thinks otherwise, IT can reassure them. Certainly, IT technicians and consultants understand that spam is a plague and not something invited by the recipient. As extra protection, depending upon how you receive your e-mail on campus, there are ways to quarantine spam and/or filter your incoming e-mail.  It is advisable to immediately delete any such emails you receive.</p></article>",
+      "helpful_text": "",
+      "number": "KB0000011",
+      "sys_id": "0b48fd75474321009db4b5b08b9a71c2",
+      "last_updated_on": "Updated 9y ago",
+      "last_helpful_rating": "0",
+      "last_rating": "",
+      "view_count": "3 Views"
+    }
+  ]
+}
+```
+</details>
+
+:::note
+The output schema for a KB is very different than the output schema for Tasks and Incidents which use the same schema. Take every table into consideration based on their output when designing an output schema
+:::
+<details>
+<summary><b>Output Schema</b></summary>
+
+```yaml
+getKBs: #Use for when getting multiple KBs
+  type: object
+  properties:
+    result:
+      x-ibm-label: Knowledge Articles
+      type: array
+      items:
+        type: object
+        properties:
+          sys_id:
+            $ref: '#/components/schemas/sysID'
+          last_updated_on:
+            type: string
+          content:
+            type: string
+          author:
+            type: string
+          short_description:
+            type: string
+          number:
+            type: string
+```
+</details>

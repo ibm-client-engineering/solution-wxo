@@ -1,0 +1,9 @@
+{
+  "label": "Script Details",
+  "position": 3,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "description": "Deeper dive into the yaml used for the API"
+  }
+}

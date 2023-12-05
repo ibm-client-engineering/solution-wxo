@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: JC - ServiceNow Table API
+  title: JC - Watsonx Orchestrate ServiceNow API
   contact:
     name: Joe Cosenza
     email: jcosenz@us.ibm.com
@@ -123,7 +123,7 @@ paths:
               $ref: '#/components/schemas/editTable'
       responses:
         '201':
-          description: KB created
+          description: Task created
           content:
             application/json:
               schema:
@@ -152,7 +152,7 @@ paths:
               $ref: '#/components/schemas/editTable'
       responses:
         '201':
-          description: KB created
+          description: Incident created
           content:
             application/json:
               schema:
@@ -163,7 +163,7 @@ paths:
   #This path where user defines tableName will not work in WXO unless {tableName} can be passed as a parameter when it is not a skill output
   #   get:
   #     summary: JC - Retrieve a specific Record in ServiceNow
-  #     description: Composite Skill - Record a specific record in ServiceNow
+  #     description: Composite Skill - Retrieve a specific record in ServiceNow
   #     operationId: retrievespecificRecord
   #     parameters:
   #       - name: tableName
@@ -295,38 +295,38 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/getthisTable'
-    delete:
-    #For all deletes, they currently fail in WXO but successfully deletes the record on in SNow
-      summary: JC - Delete a specific record in ServiceNow (Composite only)
-      description: Composite Skill - Delete a specific record in ServiceNow
-      operationId: deletethisTask
-      parameters:
-        - name: sys_id
-          x-ibm-label: ServiceNow SysID (hidden)
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/sysID'
-      responses:
-        '204':
-          description: Record deleted
-          content:
-            application/json: 
-              schema:
-                x-ibm-label: Record delted
-                type: object
-        '404':
-          description: Record not found
-          content:
-            application/json: 
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+    # delete:
+    # #For all deletes, they currently fail in WXO but successfully deletes the record on in SNow
+    #   summary: JC - Delete a specific Task in ServiceNow (Composite only)
+    #   description: Composite Skill - Delete a specific Task in ServiceNow
+    #   operationId: deletethisTask
+    #   parameters:
+    #     - name: sys_id
+    #       x-ibm-label: ServiceNow SysID (hidden)
+    #       in: path
+    #       required: true
+    #       schema:
+    #         $ref: '#/components/schemas/sysID'
+    #   responses:
+    #     '204':
+    #       description: Record deleted
+    #       content:
+    #         application/json: 
+    #           schema:
+    #             x-ibm-label: Record delted
+    #             type: object
+    #     '404':
+    #       description: Record not found
+    #       content:
+    #         application/json: 
+    #           schema:
+    #             type: object
+    #             properties:
+    #               error:
+    #                 type: object
+    #                 properties:
+    #                   message:
+    #                     type: string
   #Incident Table
   /api/now/table/incident/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
     get:
@@ -370,37 +370,37 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/getthisTable'
-    delete:
-      summary: JC - Delete a specific Incident in ServiceNow (Composite only)
-      description: Composite Skill - Delete a specific Incident in ServiceNow
-      operationId: deletethisIncident
-      parameters:
-        - name: sys_id
-          x-ibm-label: ServiceNow SysID (hidden)
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/sysID'
-      responses:
-        '204':
-          description: Record deleted
-          content:
-            application/json: 
-              schema:
-                x-ibm-label: Record delted
-                type: object
-        '404':
-          description: Record not found
-          content:
-            application/json: 
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+    # delete:
+    #   summary: JC - Delete a specific Incident in ServiceNow (Composite only)
+    #   description: Composite Skill - Delete a specific Incident in ServiceNow
+    #   operationId: deletethisIncident
+    #   parameters:
+    #     - name: sys_id
+    #       x-ibm-label: ServiceNow SysID (hidden)
+    #       in: path
+    #       required: true
+    #       schema:
+    #         $ref: '#/components/schemas/sysID'
+    #   responses:
+    #     '204':
+    #       description: Record deleted
+    #       content:
+    #         application/json: 
+    #           schema:
+    #             x-ibm-label: Record delted
+    #             type: object
+    #     '404':
+    #       description: Record not found
+    #       content:
+    #         application/json: 
+    #           schema:
+    #             type: object
+    #             properties:
+    #               error:
+    #                 type: object
+    #                 properties:
+    #                   message:
+    #                     type: string
   /api/now/table/sn_km_mr_st_kb_knowledge/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
     get:
       summary: JC - Retrieve a specific KB in ServiceNow (Composite only)
