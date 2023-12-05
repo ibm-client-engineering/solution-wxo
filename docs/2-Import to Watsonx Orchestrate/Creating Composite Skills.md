@@ -25,6 +25,7 @@ See [Provided Composite Skills](/Getting%20Started/skills#composite-skills)
 </details>
 
 ### Create a composite Skill Flow
+#### Steps:
 To put these skills to use, create a composite skill flow:
 1. Click the hamburger menu icon at the top left of the page, then click "Skills"
 2. Next to the "Add skills" box on the right, click the downward facing arrow
