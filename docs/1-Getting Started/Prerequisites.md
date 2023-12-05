@@ -10,19 +10,16 @@ title: Prerequisites
 </ol>
 
 :::note
-
 For this documentation we will be using a specific developer ServiceNow instance. In order to use your own instance, you will need to replace some items with your own:
 <ol>
   <li>Server URL</li>
   <li>Username</li>
   <li>Password</li>
 </ol>
-
 :::
 To create a ServiceNow Developer account and your own instance, [do so here.](https://developer.servicenow.com/dev.do)
 
 :::warningWarning: Using the Out-of-the-box ServiceNow Skils
-
 IBM does not currently provide ServiceNow instances for use with Watsonx Orchestrate out-of-the-box ServiceNow Skills. It is reccomended to provision your own ServiceNow development account and instance for both this script and the out-of-the-box Skills. The out-of-the-box ServiceNow skills require the following:
 <ol>
   <li>Server Name</li>
