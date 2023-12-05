@@ -3,7 +3,9 @@ id: walkthrough
 sidebar_position: 1
 title: Walkthrough
 ---
-#### Headers
+## Walkthrough of the JC - Watsonx Orchestrate ServiceNow API yaml
+
+### Headers
 Watsonx orchestrate requires x-ibm-application headers for properly importing skills from yaml files. See the Watsonx Orchestrate documentation [here](https://www.ibm.com/docs/en/watson-orchestrate?topic=files-using-x-properties)
 
 ```yaml
@@ -29,14 +31,14 @@ A great resource to [help with the API rules of ServiceNow](https://docs.service
 externalDocs:
   url: https://docs.servicenow.com/?context=CSHelp:REST-Table-API
 ```
-#### Server URL
+### Server URL
 This URL needs to be set <strong>for the instance you are planning on using</strong>. This is an example instance with its own username/password combination for the REST API user. When you create your own instance, update the URL here.
 ```yaml
 servers:
   - url: https://dev213519.service-now.com/
 ```
 
-#### Security
+### Security
 
 This script usses basic authentication (username/password) combination, unlike the out-of-the-box ServiceNow skills
 
@@ -51,7 +53,7 @@ securitySchemes:
     type: http
     scheme: basic
 ```
-#### Paths
+### Paths
 The paths define the path of the API call. For this walkthrough, we'll use the path that allows us to modify Tasks. The name of the Tasks table in ServiceNow is sc_tasks, defined as the tableName parameter in the script, and hardcoded in the path below.
 
 ```yaml
@@ -124,7 +126,7 @@ editTable:
 ```
 
 ### Responses
-The responses from ServiceNow reference a schema to give only the wanted information
+The responses from ServiceNow reference a schema to give only the wanted information. See [Sample Outputs](outputs) for more.
 
 ```yaml
 responses:
@@ -136,6 +138,8 @@ responses:
           $ref: '#/components/schemas/getthisTable'
 ```
 #### Response Schema
+See [Sample Outputs](outputs) for other example output schemas used.
+
 ```yaml
 getthisTable:
 #Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
@@ -215,59 +219,53 @@ These skills need to be composite because a sysID parameter is required in the p
               $ref: '#/components/schemas/getthisTable'
 ```
 
-### Components
+### Schcema Components
 In the components sections there are required schemas to apply properties or define the output of the response from ServiceNow
-##### sysID
+#### sysID
 'x-ibm-show: false' hides this parameter from the user. It is required so it can be part of the skill output to be used as a composite skill's input
-##### getthisTable
+```yaml
+sysID: #sysID is a required output for composite skills, not shown to user in table
+  x-ibm-show: false
+  type: string
+```
+#### getthisTable
 Output schema for a single table output such as a single Task or Incident
-##### getsingleKB
+```yaml
+getthisTable: #Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
+  type: object
+  properties:
+    result:
+      x-ibm-label: Results
+      type: object
+      properties:
+          sys_id:
+            $ref: '#/components/schemas/sysID'
+          opened_at:
+            type: string
+          assignment_group:
+            type: string
+          assigned_to:
+            type: string
+          urgency:
+            type: string
+          opened_by:
+            type: string
+          state:
+            type: string
+          description:
+            type: string
+          short_description:
+            type: string
+          number:
+            type: string
+```
+#### getsingleKB
 Output schema for a single table output for a KB
 :::note
 There is little difference in the output between an Incident table and a Task table so they use the same schema. KB's are different tables entirely and require their own outpit schema
 :::
-##### getKBs
-Output schema for a table of KBs
-##### getTable
-Output schema for a table of Tasks or incidents
-##### editTable
-Schema to define the content when editing a Task or Incident
-
-
 ```yaml
-components:
-  schemas:
-    sysID: #sysID is a required output for composite skills, not shown to user in table
-      x-ibm-show: false
-      type: string
-    getthisTable: #Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
-      type: object
-      properties:
-        result:
-          x-ibm-label: Results
-          type: object
-          properties:
-              sys_id:
-                $ref: '#/components/schemas/sysID'
-              opened_at:
-                type: string
-              assignment_group:
-                type: string
-              assigned_to:
-                type: string
-              urgency:
-                type: string
-              opened_by:
-                type: string
-              state:
-                type: string
-              description:
-                type: string
-              short_description:
-                type: string
-              number:
-                type: string
-    getsingleKB:
+getsingleKB:
       type: object
       properties:
         result:
@@ -286,7 +284,11 @@ components:
                 type: string
               number:
                 type: string
-    getKBs:
+```
+#### getKBs
+Output schema for a table of KBs
+```yaml
+getKBs:
       type: object
       properties:
         result:
@@ -307,7 +309,11 @@ components:
                 type: string
               number:
                 type: string
-    getTable:     #Use for multiple table results (skills like Get all Tasks and Get all Incidents)
+```
+#### getTable
+Output schema for a table of Tasks or incidents
+```yaml
+getTable:     #Use for multiple table results (skills like Get all Tasks and Get all Incidents)
       type: object
       properties:
         result:
@@ -336,4 +342,15 @@ components:
                 type: string
               number:
                 type: string
+```
+#### editTable
+Schema to define the content when editing a Task or Incident
+```yaml
+editKB:
+  type: object
+    properties:
+      short_description:
+        x-ibm-label: Short Description
+        type: string
+        description: 'Short description of the record'
 ```

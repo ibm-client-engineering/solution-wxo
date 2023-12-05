@@ -51,7 +51,7 @@ All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" 
 
 These are skills that you can see commented out in the script either unused or under construction.
 
-### Under Construction
+##### Skills Under Construction
 
 Create a new KB in ServiceNow (input schema needed for creating a KB)
 
@@ -61,25 +61,27 @@ Create a new KB in ServiceNow (input schema needed for creating a KB)
 To request table data from ServiceNow, the tableName (incidents, tasks or KBs) must be an input parameter. To do so the user would have to input the exact table name (e.g. for Tasks the user would need to input "sc_task" as the tableName) so these skills have been removed. These are to be used as reference and the path is to be used to specify the tableName needed.
 :::
 
-#### Retrieve table records from ServiceNow
+Retrieve table records from ServiceNow
 
-#### Create a new table record in ServiceNow 
+Create a new table record in ServiceNow 
 
-#### Composite Skill - Retrieve a specific record in ServiceNow
+Composite Skill - Retrieve a specific record in ServiceNow
 
-#### Composite Skill - Modify a specific record in ServiceNow
+Composite Skill - Modify a specific record in ServiceNow
 
-##### Delete Skills
+Composite Skill - Delete a specific record in ServiceNow
+
+#### Delete Skills
 
 :::warning
 At this time the Delete skills have a bug. Watsonx Orchestrate does not succsessfuly validate an empty object response as a successful skill. The chat will say the skill has failed. However, the object in ServiceNow will be successfuly deleted.
 :::
-#### Composite Skill - Delete a specific record in ServiceNow (also requires a non-friendly named tableName input)
+Composite Skill - Delete a specific record in ServiceNow
 
-#### Composite Skill - Delete a specific Incident in ServiceNow
+Composite Skill - Delete a specific Incident in ServiceNow
 
-#### Composite Skill - Delete a specific Task in ServiceNow
+Composite Skill - Delete a specific Task in ServiceNow
 
-#### Composite Skill - Delete a specific KB in ServiceNow
+Composite Skill - Delete a specific KB in ServiceNow
 
 </details>
