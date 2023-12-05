@@ -12,6 +12,7 @@
     "/v1/generate" : {
       "post" : {
         "description" : "Auto generated using Swagger Inspector",
+        "summary" : "generatepost",
         "requestBody" : {
           "content" : {
             "application/json" : {
