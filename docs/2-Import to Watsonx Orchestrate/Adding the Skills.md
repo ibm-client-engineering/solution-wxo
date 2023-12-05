@@ -4,7 +4,8 @@ sidebar_position: 3
 title: Adding the Skills
 ---
 
-### Add the skills from the skill catalog, and connect the app:
+### Add the skills
+Add the skills from the skill catalog, and connect the application:
 #### Steps:
 1. From the home screen, towards the bottom, click the "Add skills from the catalog" box
 2. Find "JC - ServiceNow API" from the list
@@ -14,7 +15,7 @@ title: Adding the Skills
   3. Click connect app
 4. Add each imported skill from the list
 
-The skills should now be added to your catalog and ready for use directly or in a composite Skill flow.
+The skills should now be added to your catalog under "JC - Watsonx Orchestrate ServiceNow API" and ready for use directly or in a composite Skill flow.
 
 :::note
 All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow. Only the [Top Level Skills](/Getting%20Started/skills/#top-level-skills) will work immediately

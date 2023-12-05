@@ -1,7 +1,7 @@
 ---
 id: uploadscript
 sidebar_position: 1
-title: Prepare and Upload the Script
+title: Preparing the Script
 ---
 
 ### Download and prepare the yaml

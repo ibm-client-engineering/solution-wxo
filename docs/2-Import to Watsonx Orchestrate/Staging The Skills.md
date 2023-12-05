@@ -3,7 +3,7 @@ id: stagingskills
 sidebar_position: 2
 title: Staging the Skills
 ---
-### Staging the Skills
+### Skill Staging
 Before we can use the newly imported skills, they must be "enhanced" in order to publish. This gives us the opportunity to stage each skill to properly display the output:
 #### Steps:
 1. Click the hamburger menu icon at the top left of the page, then click "Skills"

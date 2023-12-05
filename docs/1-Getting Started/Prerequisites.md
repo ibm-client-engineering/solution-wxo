@@ -3,7 +3,7 @@ id: prerequisites
 sidebar_position: 2
 title: Prerequisites
 ---
-#### In order to proceed you will need the following:
+#### In order to proceed you will need the prerequisites
 <ol>
   <li>Access to a Watsonx Orchestrate instance with <strong>build</strong> permissions</li>
   <li>Access to a ServiceNow instance and an account with with <strong>REST API</strong> permissions (this is usually an administrator type account)</li>
