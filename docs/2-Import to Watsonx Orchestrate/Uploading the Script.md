@@ -4,8 +4,9 @@ sidebar_position: 1
 title: Prepare and Upload the Script
 ---
 
-Steps:
-1. Download the latest .yaml file for script <a href="https://github.com/ibm-client-engineering/solution-wxo/blob/main/assets/servicenow/yamls/JC%20-%20WXOServiceNowAPI.yml">here</a>
+### Download and prepare the yaml
+#### Steps:
+1. Download the latest .yaml file <a href="https://github.com/ibm-client-engineering/solution-wxo/blob/main/assets/servicenow/yamls/JC%20-%20WXOServiceNowAPI.yml">here</a>
 2. Open the script and replace the ServiceNow instance URL with your ServiceNow instance URL:
 
 ```yaml
@@ -20,6 +21,7 @@ servers:
     4. Click the upload box and select the yaml file
     5. Click next
 
-4. Select the skills you need from the API (see <a href="http://localhost:3000/solution-wxo/Getting%20Started/skills">Provided Skills</a>)
+4. Select the skills you need from the API (see <a href="/solution-wxo/Getting%20Started/skills">Provided Skills</a>)
 5. Click add on the bottom right
+
 The skills should now be available in the list of skills

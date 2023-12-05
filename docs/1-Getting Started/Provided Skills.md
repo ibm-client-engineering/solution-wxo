@@ -5,7 +5,7 @@ title: Provided Skills
 ---
 ## Watsonx Orchestrate ServiceNow API
 ### Top Level Skills
-These are the primary skills in the Watsonx Orchestrate ServiceNow API and can be run once the skills are added and the application is connected.
+These are the primary skills in the Watsonx Orchestrate ServiceNow API and can be run once the skills are added and the application is connected
 #### Retrieve all KBs from ServiceNow 
  - Returns all KBs in a table from ServiceNow
  - WXO name "JC - Retrieve all KBs from ServiceNow"
@@ -25,7 +25,7 @@ These are the primary skills in the Watsonx Orchestrate ServiceNow API and can b
 ### Composite Skills
 
 :::info
-All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow. These skills will <strong>not work</strong> as a first step or direct usage in Watsonx Orchestrate. This is because the ServiceNow sysID is a required parameter. See [Creating Composite Skills](http://localhost:3000/solution-wxo/Import%20to%20Watsonx%20Orchestrate/compositeskills)
+All skills denoted by "Composite Skill - " and labeled with "(Composite Skill)" are only for use in a Watsonx Orchestrate Skill Flow directly after one of the above "Top Level Skills". These skills will <strong>not work</strong> as a first step or by direct usage in Watsonx Orchestrate. This is because the ServiceNow sysID is a required parameter which is a hidden input. See [Creating Composite Skills](/solution-wxo/Import%20to%20Watsonx%20Orchestrate/compositeskills).
 :::
 
 #### Composite Skill - Retrieve a Task record in ServiceNow

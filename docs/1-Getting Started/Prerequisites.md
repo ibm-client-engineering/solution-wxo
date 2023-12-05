@@ -19,7 +19,7 @@ For this documentation we will be using a specific developer ServiceNow instance
 :::
 To create a ServiceNow Developer account and your own instance, [do so here.](https://developer.servicenow.com/dev.do)
 
-:::warningWarning: Using the Out-of-the-box ServiceNow Skils
+:::warningWarning: Using the Watsonx Orchestrate Out-of-the-box ServiceNow Skils
 IBM does not currently provide ServiceNow instances for use with Watsonx Orchestrate out-of-the-box ServiceNow Skills. It is reccomended to provision your own ServiceNow development account and instance for both this script and the out-of-the-box Skills. The out-of-the-box ServiceNow skills require the following:
 <ol>
   <li>Server Name</li>

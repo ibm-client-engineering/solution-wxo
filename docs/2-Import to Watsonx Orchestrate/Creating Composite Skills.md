@@ -7,21 +7,22 @@ title: Creating Composite Skills
 ### Composite Skills
 The Watsonx Orchestrate ServiceNow API includes skills that can only be used in a composite Skill Flow.
 
+<details>
+<summary><b>List of Provided Composite Skills</b></summary>
+
 ##### Composite Skill - Retrieve a Task record in ServiceNow
- - Retrieves a specific task after specifying the sysID as an input parameter in the Skill Flow
- - WXO name "JC - Retrieve a specific Task in ServiceNow (Composite Skill)"
+
 ##### Composite Skill - Retrieve a specific KB in ServiceNow
- - Retrieves a specific KB after specifying the sysID as an input parameter in the Skill Flow
- - WXO name "JC - Retrieve a specific KB in ServiceNow (Composite Skill)"
+
 ##### Composite Skill - Retrieve a Incident record in ServiceNow
- - Retrieves a specific Incident after specifying the sysID as an input parameter in the Skill Flow
- - WXO name "JC - Retrieve a specific Incident in ServiceNow (Composite Skill)"
+
 ##### Composite Skill - Modify a specific Task in ServiceNow
- - Modifies a specific Task after specifying the sysID as an input parameter in the Skill Flow
- - WXO name "JC - Modify a specific Task in ServiceNow (Composite Skill)"
+
 ##### Composite Skill - Modify a specific Incident in ServiceNow
- - Modifies a specific Incident after specifying the sysID as an input parameter in the Skill Flow
- - WXO name "JC - Modify a specific Incient in ServiceNow (Composite Skill)"
+
+See [Provided Composite Skills](/Getting%20Started/skills#composite-skills)
+
+</details>
 
 ### Create a composite Skill Flow
 To put these skills to use, create a composite skill flow:
@@ -30,13 +31,32 @@ To put these skills to use, create a composite skill flow:
 3. Click "Create a Skill flow"
 
 An empty skil flow has been created. Now we must name and add skills to the skill flow
-:::note
-In order to add any skills to a skill flow, they must already be added to your Personal Skills. See the "Adding the Skills" section
+:::tip
+In order to add any skills to a skill flow, they must already be added to your [Personal Skills](addingskills)
 :::
-1. Name your skill flow. For this example we'll use "JC - Retrieve a specific task from ServiceNow"
-2. Add one of the Top Level Skills to your skill flow
-    :::tip
-    Here any of the Top Level Skills can be used from the Provided Skills section to retrieve whichever table is needed. For this example we'll use the Tasks ServiceNow table and "JC - Retrieve all Tasks" skill
+
+### Adding skills to the composite skill flow
+You must add one of the [Top Level Skills](/Getting%20Started/skills/#top-level-skills) to its correesponding [Composite Skills](/Getting%20Started/skills/#composite-skills) in order to properly flow the inputs and outoputs as such:
+
+```mermaid
+graph LR;
+    A(Top Level Skill) --> B(Composite Skill);
+```
+#### Examples:
+```mermaid
+graph LR;
+    A(JC - Retrieve all Tasks from ServiceNow) --> B(JC - Retrieve a specific Task from ServiceNow);
+```
+```mermaid
+graph LR;
+    A(JC - Retrieve all Incidents from ServiceNow) --> B(JC - Modify a specific Incident from ServiceNow);
+```
+
+#### Steps:
+1. Name your skill flow. For this example we'll use "JC - Retrieve a task from ServiceNow"
+2. Add one of the [Top Level Skills](/Getting%20Started/skills/#top-level-skills) to your skill flow
+    :::note
+    Here you must use one of the [Top Level Skills](/Getting%20Started/skills/#top-level-skills) to retrieve whichever table is needed. For this example we'll use the Tasks ServiceNow table and "JC - Retrieve all Tasks from ServiceNow" skill.
     :::
     1. Click the (+) button
     2. Add the a Top Level skill, such as "JC - Retrieve all Tasks" 
@@ -58,4 +78,8 @@ In order to add any skills to a skill flow, they must already be added to your P
     1. From the home screen, towards the bottom, click the "Add skills from the catalog" box
     2. Find your composite skill from the list and click "Add skill"
 
-Your composite skill is now created. This enables us to use these ServiceNow skills and their outputs in a skill flow with any other Watsonx Orchestrate skill. 
+Your composite skill is now created. This enables us to use these ServiceNow skills and their outputs in a skill flow with any other Watsonx Orchestrate skill as such:
+```mermaid
+graph LR;
+    A(JC - Retrieve all KBs from ServiceNow) --> B(JC - Retrieve a specific KB from ServiceNow) --> C(Send an email with the details of the KB in the body of the email);
+```
