@@ -1,5 +1,5 @@
 ---
-id: Walkthrough
+id: walkthrough
 sidebar_position: 1
 title: Walkthrough
 ---
@@ -46,10 +46,10 @@ security:
 ```
 and under components:
 ```yaml           
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
+securitySchemes:
+  basicAuth:
+    type: http
+    scheme: basic
 ```
 #### Paths
 The paths define the path of the API call. For this walkthrough, we'll use the path that allows us to modify Tasks. The name of the Tasks table in ServiceNow is sc_tasks, defined as the tableName parameter in the script, and hardcoded in the path below.
@@ -68,152 +68,151 @@ Each skill on Watsonx Orchestrate is done by defining an API call. It is reccome
 2. <strong>post</strong> API call:
 
 ```yaml
-    get:
-      summary: JC - Retrieve all Tasks from ServiceNow
-      description: Retrieve all Tasks from ServiceNow
-      operationId: retrieveTasks
-      responses:
-        '200':
-          description: Results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getTable'
-    post:
-      summary: JC - Create a new Task in ServiceNow
-      description: Create a new Task in ServiceNow
-      operationId: createTask
-      requestBody:
-        content:
-          application/json: 
-            schema:
-              $ref: '#/components/schemas/editTable'
+get:
+  summary: JC - Retrieve all Tasks from ServiceNow
+  description: Retrieve all Tasks from ServiceNow
+  operationId: retrieveTasks
+  responses:
+    '200':
+      description: Results
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/getTable'
+post:
+  summary: JC - Create a new Task in ServiceNow
+  description: Create a new Task in ServiceNow
+  operationId: createTask
+  requestBody:
+    content:
+      application/json: 
+        schema:
+          $ref: '#/components/schemas/editTable'
 ```
-
 ### Request Body
 Request bodies define the content to be sent to Servicenow
 
 ```yaml
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/editTable'     
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/editTable'     
 ```
 The editTable schema defines the properties of the request body when creating a new task:
 ```yaml
-    editTable:
-      type: object
-      properties:
-        short_description:
-          x-ibm-label: Short Description
-          type: string
-          description: 'Short description of the record'
-        description:
-          x-ibm-label: Description
-          x-ibm-multiline: true
-          type: string
-          description: 'Detailed description of the record'
-        urgency:
-          x-ibm-label: Urgency
-          type: integer
-          description: '3 - Low, 2 - Medium, 1 - High'
-          enum:
-            - 3
-            - 2
-            - 1
+editTable:
+  type: object
+  properties:
+    short_description:
+      x-ibm-label: Short Description
+      type: string
+      description: 'Short description of the record'
+    description:
+      x-ibm-label: Description
+      x-ibm-multiline: true
+      type: string
+      description: 'Detailed description of the record'
+    urgency:
+      x-ibm-label: Urgency
+      type: integer
+      description: '3 - Low, 2 - Medium, 1 - High'
+      enum:
+        - 3
+        - 2
+        - 1
 ```
 
 ### Responses
 The responses from ServiceNow reference a schema to give only the wanted information
 
 ```yaml
-      responses:
-        '201':
-          description: Task created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getthisTable'
+responses:
+  '201':
+    description: Task created
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/getthisTable'
 ```
 #### Response Schema
 ```yaml
-    getthisTable:
-    #Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
+getthisTable:
+#Use when getting a single table such as Tasks and Incidents from a composite (sysID required input) skill
+  type: object
+  properties:
+    result:
+      x-ibm-label: Results
       type: object
       properties:
-        result:
-          x-ibm-label: Results
-          type: object
-          properties:
-              sys_id:
-                $ref: '#/components/schemas/sysID'
-              opened_at:
-                type: string
-              assignment_group:
-                type: string
-              assigned_to:
-                type: string
-              urgency:
-                type: string
-              opened_by:
-                type: string
-              state:
-                type: string
-              description:
-                type: string
-              short_description:
-                type: string
-              number:
-                type: string
+          sys_id:
+            $ref: '#/components/schemas/sysID'
+          opened_at:
+            type: string
+          assignment_group:
+            type: string
+          assigned_to:
+            type: string
+          urgency:
+            type: string
+          opened_by:
+            type: string
+          state:
+            type: string
+          description:
+            type: string
+          short_description:
+            type: string
+          number:
+            type: string
 ```
 
 ### Composite Skills
 These skills need to be composite because a sysID parameter is required in the path (see {sys_ID}). To do this we use the Retrieve all Tasks skill first in the skill flow. When the user selects a task from the table, the sysID is captured as an output, then used as an input for the composite skill. This way, the user never has to worry about finding the ServiceNow sysID. Below are two composite Skills.
 
 ```yaml
-  /api/now/table/sc_task/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
-    get:
-      summary: JC - Retrieve a specific Task in ServiceNow (Composite only)
-      description: Composite Skill - Retrieve a Task record in ServiceNow
-      operationId: retrievethisTask
-      parameters:
-        - name: sys_id
-          x-ibm-label: ServiceNow SysID (hidden)
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/sysID'
-      responses:
-        '200':
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getthisTable'    
-    put:
-      summary: JC - Modify a specific Task in ServiceNow (Composite only)
-      description: Composite Skill - Modify a specific Task in ServiceNow
-      operationId: modifythisTask
-      parameters:
-        - name: sys_id
-          x-ibm-label: ServiceNow SysID (hidden)
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/sysID'
-      requestBody:
+/api/now/table/sc_task/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
+  get:
+    summary: JC - Retrieve a specific Task in ServiceNow (Composite only)
+    description: Composite Skill - Retrieve a Task record in ServiceNow
+    operationId: retrievethisTask
+    parameters:
+      - name: sys_id
+        x-ibm-label: ServiceNow SysID (hidden)
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/sysID'
+    responses:
+      '200':
+        description: ok
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/editTable'          
-      responses:
-        '200':
-          description: Record updated
-          content:
-            application/json: 
-              schema:
-                $ref: '#/components/schemas/getthisTable'
+              $ref: '#/components/schemas/getthisTable'    
+  put:
+    summary: JC - Modify a specific Task in ServiceNow (Composite only)
+    description: Composite Skill - Modify a specific Task in ServiceNow
+    operationId: modifythisTask
+    parameters:
+      - name: sys_id
+        x-ibm-label: ServiceNow SysID (hidden)
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/sysID'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/editTable'          
+    responses:
+      '200':
+        description: Record updated
+        content:
+          application/json: 
+            schema:
+              $ref: '#/components/schemas/getthisTable'
 ```
 
 ### Components
