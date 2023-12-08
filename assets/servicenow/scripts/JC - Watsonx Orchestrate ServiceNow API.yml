@@ -10,7 +10,7 @@ info:
     #3) bility to pass tableName parameter for composite skill when tableName is not an output from SNow
     #4) Lookup filtering - searching for keywords etc
     #5) Create a proper post KB schema
-  x-ibm-application-name: JC - ServiceNow Table API
+  x-ibm-application-name: JC - ServiceNow API
   x-ibm-application-id: JC-ServiceNowAPI
   description: Allows you to perform create, read, update, and delete (CRUD) operations on existing ServiceNow tables
   version: latest
