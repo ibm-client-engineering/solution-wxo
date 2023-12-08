@@ -12,7 +12,7 @@ info:
 servers:
   - url: "https://us-south.ml.cloud.ibm.com"
 security:
-#To authorize you must connect the app with "Bearer <Your bearer token>"
+#To authorize in Watsonx Orchestrate you must connect the app with a bearer token
 #To obtain a bearer token, you must generate an API key in IBM Cloud
 #Once you obtain your API key run this call to obtain your Bearer Token using your API Key
 #curl -X POST 'https://iam.cloud.ibm.com/identity/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=<Your API Key>'
@@ -58,22 +58,55 @@ components:
       properties:
         model_id:
           x-ibm-label: Foundation Model
-          description: Select a model that best fits your needs. All models support English text. Check the model information for other supported languages.
           #x-ibm-show: false
+          description: >
+            Select a model that best fits your needs. All models support English text. Check the model information for other supported languages.
+              - The Granite model series is a family of IBM-trained, dense decoder-only models, which are particularly well-suited for generative tasks.
+                - granite-13b-chat-v1
+                - granite-13b-chat-v2
+                - granite-13b-instruct-v1
+                - granite-13b-instruct-v2
+              - Non IBM Models
+                - Disclaimer: These models are a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx
+                - flan-ul2-20b
+                  - flan-ul2 is an encoder decoder model based on the T5 architecture and instruction-tuned using the Fine-tuned Language Net.
+                - flan-t5-xxl-11b
+                  - flan-t5-xxl is an 11 billion parameter model based on the Flan-T5 family.
+                - flan-t5-xl-3b
+                  - A pretrained T5 - an encoder-decoder model pre-trained on a mixture of supervised / unsupervised tasks converted into a text-to-text format.
+                - starcoder-15.5b
+                  - The StarCoder models are 15.5B parameter models that can generate code from natural language descriptions.
+                - mt0-xxl-13b
+                  - An instruction-tuned iteration on mT5.
+                - gpt-neox-20b
+                  - A 20 billion parameter autoregressive language model trained on the Pile.
+                - mpt-7b-instruct2
+                  - MPT-7B is a decoder-style transformer pretrained from scratch on 1T tokens of English text and code. This model was trained by IBM.
+                - llama-2-13b-chat
+                  - Llama-2-13b-chat is an auto-regressive language model that uses an optimized transformer architecture.
+                - llama-2-70b-chat
+                  - Llama-2-70b-chat is an auto-regressive language model that uses an optimized transformer architecture.
           type: string
           default: "google/flan-ul2"
           enum:
             - "google/flan-ul2"
             - "google/flan-t5-xxl"
-            - "eleutherai/gpt-neox-20b"
-            - "ibm/mpt-7b-instruct"
+            - "google/flan-t5-xl"
             - "bigcode/starcoder"
             - "bigscience/mt0-xxl"
+            - "eleutherai/gpt-neox-20b"
+            - "ibm/granite-13b-chat-v1"
+            - "ibm/granite-13b-chat-v2"
+            - "ibm/granite-13b-instruct-v1"
+            - "ibm/granite-13b-instruct-v2"
+            - "ibm/mpt-7b-instruct2"
+            - "meta-llama/llama-2-13b-chat"
+            - "meta-llama/llama-2-70b-chat"
         input:
           type: string
           x-ibm-multiline: "true"
           x-ibm-label: Watsonx AI Prompt
-          default: "Enter your text here in a prompt form"
+          default: "Enter your prompt here. Be specific to what you want Watsonx AI to do!"
         parameters:
           $ref: "#/components/schemas/parameters"
         project_id:
@@ -86,14 +119,13 @@ components:
       type: object
       properties:
         results:
-          x-ibm-label: Watsonx AI Says
+          x-ibm-label: 'Watsonx AI Says:'
           type: array
           items:
             type: object
             properties: 
                 generated_text:
-                  x-ibm-label: Results
-                  type: string
+                    type: string
     errorResponse:
       description: Unsuccessful response
       type: object
@@ -137,7 +169,7 @@ components:
           description: Penalty for repetition penalty. 1.00 means no penalty.
           #x-ibm-show: false
           type: number
-          default: 1.00
+          default: 2.00
           minimum: 1.00
           maximum: 2.00
         temperature: 
@@ -165,11 +197,11 @@ components:
           default: 1.00
           minimum: 0
           maximum: 1.00
-        random_seed:
-          x-ibm-label: Random Seed
-          description: Sample Method- Controls the random sampling of the generated tokens when sampling is enabled. Setting the random seed to the same number for each generation ensures experimental repeatability.
-          #x-ibm-show: false
-          type: integer
+        # random_seed:
+        #   x-ibm-label: Random Seed
+        #   description: Sample Method- Controls the random sampling of the generated tokens when sampling is enabled. Setting the random seed to the same number for each generation ensures experimental repeatability.
+        #   x-ibm-show: false
+        #   type: integer
         stop_sequences:
           x-ibm-label: Stop Sequences
           description: Stop sequences are one or more strings which will cause the text generation to stop if/when they are produced as part of the output. Stop sequences encountered prior to the minimum number of tokens being generated will be ignored.
@@ -179,6 +211,6 @@ components:
             type: string
   securitySchemes:
     bearerAuth:
-      type: apiKey
-      in: header
-      name: Authorization
+      type: http
+      scheme: bearer
+      bearerFormat: IBM Cloud Pak Bearer Access Token
