@@ -1,0 +1,20 @@
+{
+  "model_id": "google/flan-ul2",
+  "created_at": "2023-12-08T19:45:20.631Z",
+  "results": [
+    {
+      "generated_text": "What is the name of the person who wrote this?nI want to know more about them.nPlease tell me their full name and where they were born.nI want to know what other books they have written.nI want to know if they are married.nI want to know if they have children.nI want to know if they are in any bands.nI want to know if they are famous.nI want to know if they are an artist.nI want to know if they are a politician.nI want to know if they are a businessperson.nI want to know if they are a teacher.nI want to know if they are a doctor.nI want to know if they are a lawyer.nI want to know if they are a singer.nI want to know if they are a dancer.nI want to know if they are a painter.nI want to know if they are a musician.nI want to know if they are a poet.nI want to know if they are a novelist.nI want to know if they are a playwright.nI want to know if they are a screenwriter.nI want to know if they are a journalist.nI want to know if they are a professor.nI want to know if they are a researcher.nI want to know if they are a scientist.nI want to know if they are a student.nI want to know if they are a teacher.nI want to know if they are a nurse.nI want to know if they are a police officer.nI want to know if they are a firefighter.nI want to know if they are a soldier.nI want to know if they are a waitress.nI want to know if they are a bus driver.nI want to know if they are a veterinarian.nI want to know if they are a vet tech.",
+      "generated_token_count": 503,
+      "input_token_count": 18,
+      "stop_reason": "eos_token"
+    }
+  ],
+  "system": {
+    "warnings": [
+      {
+        "message": "This model is a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx",
+        "id": "disclaimer_warning"
+      }
+    ]
+  }
+}

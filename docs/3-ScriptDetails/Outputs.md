@@ -11,11 +11,11 @@ https://`YOUR_INSTANCE_NAME_HERE`.service-now.com/now/nav/ui/classic/params/targ
 
 ### Query Parameters
 
-All of the following outputs assume both of these ServiceNow queries to be true:
+All of the following outputs assume both of these ServiceNow queries of the Table API to be true:
 
-`sysparm_display_value = true`
+`sysparm_display_value` = `true`
 
-`sysparm_exclude_reference_link = true`
+`sysparm_exclude_reference_link` = `true`
 
 These are added to the path by appending this to the url in all paths:
 
