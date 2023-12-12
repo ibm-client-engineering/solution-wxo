@@ -4,10 +4,11 @@ info:
   contact:
     name: Joe Cosenza
     email: jcosenz@us.ibm.com
+    url: https://ibm-client-engineering.github.io/solution-wxo
   #Still need to research/fix:
     #1) Delete call result output on WXO - Returns empty object for success - WXO says failure
     #2) Friendly input parameters for tableName
-    #3) bility to pass tableName parameter for composite skill when tableName is not an output from SNow
+    #3) Ability to pass tableName parameter for composite skill when tableName is not an output from SNow
     #4) Lookup filtering - searching for keywords etc
     #5) Create a proper post KB schema
   x-ibm-application-name: JC - ServiceNow API
