@@ -1,26 +1,30 @@
 ---
 id: outputs
 sidebar_position: 2
-title: Sample Outputs
+title: Outputs
 ---
-## ServiceNow Outputs and their Output Schemas
+## ServiceNow Outputs
 Sample outputs of SerciceNow responses. Use these for reference when building response schemas in the yaml.
 
 Reference your instance's REST API Explorer to test calls and their outputs:
-https://YOUR_INSTANCE_NAME_HERE.service-now.com/now/nav/ui/classic/params/target/%24restapi.do
+https://`YOUR_INSTANCE_NAME_HERE`.service-now.com/now/nav/ui/classic/params/target/%24restapi.do
 
-#### ServiceNow API Name: Table API
+### Query Parameters
 
-All of the following outputs assume both of these ServiceNow queries to be true:
+All of the following outputs assume both of these ServiceNow queries of the Table API to be true:
 
-`sysparm_display_value = true`
+`sysparm_display_value` = `true`
 
-`sysparm_exclude_reference_link = true`
+`sysparm_exclude_reference_link` = `true`
 
 These are added to the path by appending this to the url in all paths:
 
 `?sysparm_display_value=true&sysparm_exclude_reference_link=true`
 
+## Sample Outputs and Output Schema Comparisons
+:::tip
+The output schema cam be modified to show/hide any information recieved from ServiceNow. These example Output Schemas are currently in use in the Watsonx Orchestrate ServiceNow API
+:::
 ### Single table outputs
 These are outputs from SeriviceNow that show a single table item. Single table outputs are made up of a single results object, with nested objects inside.
 Sys_ID is a required parameter, so these are composite skills.
@@ -108,10 +112,6 @@ Sys_ID is a required parameter, so these are composite skills.
 }
 ```
 </details>
-
-:::tip
-The output schema cam be modified to show/hide any information recieved from ServiceNow. These example Output Schemas are currently in use in the Watsonx Orchestrate ServiceNow API
-:::
 <details>
 <summary><b>Output Schema</b></summary>
 

@@ -3,10 +3,12 @@ id: walkthrough
 sidebar_position: 1
 title: Walkthrough
 ---
-## Walkthrough of the JC - Watsonx Orchestrate ServiceNow API yaml
+# Walkthrough of the JC - Watsonx Orchestrate ServiceNow API yaml
 
-### Headers
-Watsonx orchestrate requires x-ibm-application headers for properly importing skills from yaml files. See the Watsonx Orchestrate documentation [here](https://www.ibm.com/docs/en/watson-orchestrate?topic=files-using-x-properties)
+## Basic Structure
+
+### Metadata
+Watsonx orchestrate requires `x-ibm-application` headers for properly importing skills from yaml files. Refer to the Watsonx Orchestrate documentation [here](https://www.ibm.com/docs/en/watson-orchestrate?topic=files-using-x-properties)
 
 ```yaml
 openapi: 3.0.1
@@ -26,12 +28,13 @@ externalDocs:
 servers:
   - url: https://dev213519.service-now.com/
 ```
-A great resource to [help with the API rules of ServiceNow](https://docs.servicenow.com/?context=CSHelp:REST-Table-API)
+`x-ibm-application-icon:` object is my SVG image (produces a orange/black JC)
+
 ```yaml
 externalDocs:
   url: https://docs.servicenow.com/?context=CSHelp:REST-Table-API
 ```
-### Server URL
+### Servers
 This URL needs to be set <strong>for the instance you are planning on using</strong>. This is an example instance with its own username/password combination for the REST API user. When you create your own instance, update the URL here.
 ```yaml
 servers:
@@ -40,7 +43,7 @@ servers:
 
 ### Security
 
-This script usses basic authentication (username/password) combination, unlike the out-of-the-box ServiceNow skills
+This script usses basic authentication (username/password) combination. 
 
 ```yaml
 security:
@@ -53,19 +56,24 @@ securitySchemes:
     type: http
     scheme: basic
 ```
-### Paths
-The paths define the path of the API call. For this walkthrough, we'll use the path that allows us to modify Tasks. The name of the Tasks table in ServiceNow is sc_tasks, defined as the tableName parameter in the script, and hardcoded in the path below.
+:::note
+The out-of-the-box Watsonx Orchestrate ServiceNow skills uses OAUTH authentication, which requires supplying the Server name, `client_id` and `client_secret` in addition to a username and password. It is also possible to configure this application this way by using a OAUTH provider and OAUTH credentials from ServiceNow.
+:::
+## Paths
+The paths define the path of the API call. For this walkthrough, we'll use the path that allows us to modify Tasks. The name of the Tasks table in ServiceNow is "sc_tasks", defined as the `tableName` parameter in the script, and hardcoded in the path below.
 
 ```yaml
 paths:  
   /api/now/table/sc_task?sysparm_display_value=true&sysparm_exclude_reference_link=true:
 ```
 :::note
-The querys used in this script 'sysparm_display_value=true and sysparm_exclude_reference_link=true' are in the path. Most swagger validators will not allow this, however Watsonx Orchestrate allows query parameters in the path. These are used to recieve friendly values in our response from ServiceNow.
+The querys used in this script `sysparm_display_value=true` and `sysparm_exclude_reference_link=true` are in the path. Most swagger validators will not allow this, however Watsonx Orchestrate allows query parameters in the path. These are used to recieve friendly values in our response from ServiceNow.
 :::
 
 ### API Calls
-Each skill on Watsonx Orchestrate is done by defining an API call. It is reccomended that you create a specific "get" call per skill (eg: Retrieve all TASKS from Servicenow). Having the user specify the tableName is not a friendly display. In the code below, 2 skills are identified:
+Each skill on Watsonx Orchestrate is done by defining an API call. Here's a great resource to [help with the API commands for ServiceNow](https://docs.servicenow.com/?context=CSHelp:REST-Table-API)
+
+ It is reccomended that you create a specific "get" call per skill (eg: Retrieve all TASKS from Servicenow). Having the user specify the `tableName` is not a friendly display. In the code below, 2 skills are identified: 
 1. <strong>get</strong> API call: JC - Retrieve all Tasks from ServiceNow
 2. <strong>post</strong> API call:
 
@@ -91,6 +99,16 @@ post:
         schema:
           $ref: '#/components/schemas/editTable'
 ```
+`objectId` object gives the task a unuqie name for the backend to point to this skill
+
+`description` objext is the description Watsonx Orchestrate applies to the skill
+
+`summary` object is the name Watsonx Orchestrate applies to the skill
+
+:::warning
+A `operationId` and `summary` object is required for each skill in order to pass Watsonx Orchestrate's validation process for all imported skill files.
+:::
+
 ### Request Body
 Request bodies define the content to be sent to Servicenow
 
@@ -101,7 +119,7 @@ requestBody:
       schema:
         $ref: '#/components/schemas/editTable'     
 ```
-The editTable schema defines the properties of the request body when creating a new task:
+The editTable schema defines the properties of the request body when creating a new task via the "JC - Create a Task in ServiceNow" skill. This is to be edited if a different <strong>input</strong> on Watsonx Orchestrate is desired.
 ```yaml
 editTable:
   type: object
@@ -124,9 +142,8 @@ editTable:
         - 2
         - 1
 ```
-
 ### Responses
-The responses from ServiceNow reference a schema to give only the wanted information. See [Sample Outputs](outputs) for more.
+The responses from ServiceNow reference a schema to get only the specific information. This is to be edited if a different <strong>output</strong> on Watsonx Orchestrate is desired. See [Sample Outputs](outputs) for more.
 
 ```yaml
 responses:
@@ -171,8 +188,10 @@ getthisTable:
             type: string
 ```
 
-### Composite Skills
-These skills need to be composite because a sysID parameter is required in the path (see {sys_ID}). To do this we use the Retrieve all Tasks skill first in the skill flow. When the user selects a task from the table, the sysID is captured as an output, then used as an input for the composite skill. This way, the user never has to worry about finding the ServiceNow sysID. Below are two composite Skills.
+## Composite Skills
+These skills need to be composite because a `sysID` parameter is required in the path (see `{sys_ID}`). The `sysId` is the unique ServiceNow identifier to a specific table item. To get this identifier, we use a [Top Level Skill](/GettingStarted/skills#top-level-skills) first in the skill flow. Next we add the [Composite Skill](/GettingStarted/skills#composite-skills). When the user selects a task from the table, the `sysID` is captured as an output, then used as an input for the composite skill. This way, the user never has to worry about finding the ServiceNow `sysID`. 
+
+Below are two composite Skills:
 
 ```yaml
 /api/now/table/sc_task/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
@@ -219,15 +238,16 @@ These skills need to be composite because a sysID parameter is required in the p
               $ref: '#/components/schemas/getthisTable'
 ```
 
-### Schcema Components
+## Schcema Components
 In the components sections there are required schemas to apply properties or define the output of the response from ServiceNow
 #### sysID
-'x-ibm-show: false' hides this parameter from the user. It is required so it can be part of the skill output to be used as a composite skill's input
 ```yaml
 sysID: #sysID is a required output for composite skills, not shown to user in table
   x-ibm-show: false
   type: string
 ```
+`x-ibm-show: false` hides this parameter from the user. It is required so it can be part of the skill output to be used as a composite skill's input.
+### Output Schemas
 #### getthisTable
 Output schema for a single table output such as a single Task or Incident
 ```yaml
@@ -259,6 +279,10 @@ getthisTable: #Use when getting a single table such as Tasks and Incidents from 
           number:
             type: string
 ```
+`x-ibm-label:` is used to name the skill output "Results"
+:::note
+Note that the `sys_id` object is pointing to the `sysID` schema. This is where the ServiceNow sysID is an output item of the skill, but never shown to the user.
+:::
 #### getsingleKB
 Output schema for a single table output for a KB
 :::note

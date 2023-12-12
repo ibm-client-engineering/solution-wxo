@@ -4,7 +4,10 @@ sidebar_position: 2
 title: Staging the Skills
 ---
 ### Skill Staging
-Before we can use the newly imported skills, they must be "enhanced" in order to publish. This gives us the opportunity to stage each skill to properly display the output:
+Before we can use the newly imported skills, they must be "enhanced" in order to publish. This gives us the opportunity to stage the skill to properly display the output.
+
+<strong>You must repeat this process for each skill</strong>
+
 #### Steps:
 1. Click the hamburger menu icon at the top left of the page, then click "Skills"
 2. Using the search bar, search for "JC - ". This will show all skills denoted with name JC - like our ServiceNow skills
@@ -15,7 +18,7 @@ Before we can use the newly imported skills, they must be "enhanced" in order to
   4. Fill in the proper "friendly name" for each collumn for the results output
 
 :::warning
-The last coullumn in some skils will be "Empty". This is used to output the ServiceNow "sysID" for composite skills without exposing the value to the user. Leave the header for "Empty" in the output table blank.
+The last collumn in some skils will be "Empty". This is used to output the ServiceNow "sysID" for composite skills without exposing the value to the user. Leave the header for "Empty" in the output table blank.
 :::
 
 ##### Example:
