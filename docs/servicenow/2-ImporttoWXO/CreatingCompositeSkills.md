@@ -37,7 +37,7 @@ In order to add any skills to a skill flow, they must already be added to your [
 :::
 
 ### Adding skills to the composite skill flow
-You must add one of the [Top Level Skills](/GettingStarted/skills#top-level-skills) to its correesponding [Composite Skills](/GettingStarted/skills/#composite-skills) in order to properly flow the inputs and outoputs as such:
+You must add one of the [Top Level Skills](/servicenow/GettingStarted/skills#top-level-skills) to its correesponding [Composite Skills](/servicenow/GettingStarted/skills/#composite-skills) in order to properly flow the inputs and outoputs as such:
 
 ```mermaid
 graph LR;
@@ -55,9 +55,9 @@ graph LR;
 
 #### Steps:
 1. Name your skill flow. For this example we'll use "JC - Retrieve a task from ServiceNow"
-2. Add one of the [Top Level Skills](/GettingStarted/skills#top-level-skills) to your skill flow
+2. Add one of the [Top Level Skills](/servicenow/GettingStarted/skills#top-level-skills) to your skill flow
     :::note
-    Here you must use one of the [Top Level Skills](/GettingStarted/skills#top-level-skills) to retrieve whichever table is needed. For this example we'll use the Tasks ServiceNow table and "JC - Retrieve all Tasks from ServiceNow" skill.
+    Here you must use one of the [Top Level Skills](/servicenow/GettingStarted/skills#top-level-skills) to retrieve whichever table is needed. For this example we'll use the Tasks ServiceNow table and "JC - Retrieve all Tasks from ServiceNow" skill.
     :::
     1. Click the (+) button
     2. Add the a Top Level skill, such as "JC - Retrieve all Tasks" 

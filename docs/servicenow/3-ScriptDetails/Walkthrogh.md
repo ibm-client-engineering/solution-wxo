@@ -189,7 +189,7 @@ getthisTable:
 ```
 
 ## Composite Skills
-These skills need to be composite because a `sysID` parameter is required in the path (see `{sys_ID}`). The `sysId` is the unique ServiceNow identifier to a specific table item. To get this identifier, we use a [Top Level Skill](/GettingStarted/skills#top-level-skills) first in the skill flow. Next we add the [Composite Skill](/GettingStarted/skills#composite-skills). When the user selects a task from the table, the `sysID` is captured as an output, then used as an input for the composite skill. This way, the user never has to worry about finding the ServiceNow `sysID`. 
+These skills need to be composite because a `sysID` parameter is required in the path (see `{sys_ID}`). The `sysId` is the unique ServiceNow identifier to a specific table item. To get this identifier, we use a [Top Level Skill](/servicenow/GettingStarted/skills#top-level-skills) first in the skill flow. Next we add the [Composite Skill](/servicenow/GettingStarted/skills#composite-skills). When the user selects a task from the table, the `sysID` is captured as an output, then used as an input for the composite skill. This way, the user never has to worry about finding the ServiceNow `sysID`. 
 
 Below are two composite Skills:
 
