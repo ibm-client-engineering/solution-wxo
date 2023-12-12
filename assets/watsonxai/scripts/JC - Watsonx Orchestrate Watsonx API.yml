@@ -1,29 +1,35 @@
 openapi: 3.0.1
 info:
-  title: JC - Watsonx AI API
+  title: JC - Watsonx API
   contact:
     name: Joe Cosenza
     email: jcosenz@us.ibm.com
-  x-ibm-application-name: JC - Watsonx AI API
-  x-ibm-application-id: JC-WatsonxAIAPI
-  description: Allows you to send text prompts to Watsonx AI Prompt Generator
+    url: https://ibm-client-engineering.github.io/solution-wxo/watsonx
+  x-ibm-application-name: JC - Watsonx API
+  x-ibm-application-id: JC-WatsonxAPI
+  description: Allows you to send API calls to Watsonx
   x-ibm-application-icon: <svg width="30" height="30" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 360"><defs><style>.cls-1{fill:#f8b500;}.cls-2{fill:#231815;}</style></defs><title>JRK number</title><path class="cls-1" d="M354.6,295.5H39.4A39.4,39.4,0,0,1,0,256.1V39.4A39.4,39.4,0,0,1,39.4,0H354.6A39.4,39.4,0,0,1,394,39.4V256.1a39.4,39.4,0,0,1-39.4,39.4"/><path class="cls-2" d="M105.85,44.44h45.42V171.75c0,57.37-27.49,77.4-71.72,77.4-10.46,0-24.21-1.8-33.17-4.78l5.08-36.76a74.94,74.94,0,0,0,23.31,3.58c19.12,0,31.08-8.66,31.08-40Z"/><path class="cls-2" d="M337.15,240.18c-8.37,4.19-27.19,8.67-51.7,8.67C215.82,248.85,180,205.52,180,148.14c0-68.74,49-107,110-107,23.6,0,41.53,4.78,49.6,9l-9.26,36.16A98.32,98.32,0,0,0,292,78.81c-36.16,0-64.25,21.81-64.25,66.64,0,40.34,23.9,65.74,64.55,65.74,13.74,0,29-3,37.95-6.57Z"/></svg>
   version: latest
+externalDocs:
+  url: https://cloud.ibm.com/apidocs/watson-data-api#connections
 servers:
   - url: "https://us-south.ml.cloud.ibm.com"
+  #see https://cloud.ibm.com/apidocs/machine-learning#endpoint-url
 security:
 #To authorize in Watsonx Orchestrate you must connect the app with a bearer token
 #To obtain a bearer token, you must generate an API key in IBM Cloud
 #Once you obtain your API key run this call to obtain your Bearer Token using your API Key
-#curl -X POST 'https://iam.cloud.ibm.com/identity/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=<Your API Key>'
-#https://cloud.ibm.com/apidocs/watson-data-api#connections
+  #curl -X POST 'https://iam.cloud.ibm.com/identity/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=<Your API Key>'
+# - See https://cloud.ibm.com/apidocs/iam-identity-token-api#create-an-iam-access-token-for-a-user-or-service-i
+#Replace the "project_Id" Value with your Project ID #/components/schemas/properties/project_id/default
+#Double check the version level in the path to ensure it matches your Watsonx version - See https://cloud.ibm.com/apidocs/machine-learning#versioning
   - bearerAuth: []
 paths:
   "/ml/v1-beta/generation/text?version=2023-05-29":
     post:
-      summary: JC - Send a prompt to Watsonx AI
-      description: Send a prompt to Watsonx AI
-      operationId: sendPromptWXAI
+      summary: JC - Send a prompt to Watsonx Prompt Lab
+      description: Send a prompt to Watsonx Prompt Lab
+      operationId: sendPrompt
       requestBody:
         description: Send generation request
         content:
@@ -31,20 +37,32 @@ paths:
             schema:
               $ref: "#/components/schemas/requestBody"
       responses:
-        "202":
+        202:
           description: Request accepted
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/response"
-        "401":
-          description: Request denied
+        400:
+          description: Bad request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/errorResponse"
-        "403":
-          description: Request denied, out of tokens
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        500:
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -56,22 +74,30 @@ components:
       required:
         - input
       properties:
+        project_id:
+          x-ibm-disable: true
+          x-ibm-show: false
+          type: string
+          #Update the default value to your project's ID
+          default: "e4f278c2-464c-4568-b5af-d0556f5120b6"
         model_id:
           x-ibm-label: Foundation Model
-          #x-ibm-show: false
           description: >
             Select a model that best fits your needs. All models support English text. Check the model information for other supported languages.
-              - The Granite model series is a family of IBM-trained, dense decoder-only models, which are particularly well-suited for generative tasks.
+            
+            - The Granite series of models are a family of IBM-trained decoder-only models used for text generation, summarization, question and answer, classification, and extraction.
                 - granite-13b-chat-v1
                 - granite-13b-chat-v2
                 - granite-13b-instruct-v1
                 - granite-13b-instruct-v2
+
               - Non IBM Models
                 - Disclaimer: These models are a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx
+                
                 - flan-ul2-20b
-                  - flan-ul2 is an encoder decoder model based on the T5 architecture and instruction-tuned using the Fine-tuned Language Net.
+                  - An encoder decoder model based on the T5 architecture and instruction-tuned using the Fine-tuned Language Net.
                 - flan-t5-xxl-11b
-                  - flan-t5-xxl is an 11 billion parameter model based on the Flan-T5 family.
+                  - An 11 billion parameter model based on the Flan-T5 family.
                 - flan-t5-xl-3b
                   - A pretrained T5 - an encoder-decoder model pre-trained on a mixture of supervised / unsupervised tasks converted into a text-to-text format.
                 - starcoder-15.5b
@@ -81,11 +107,11 @@ components:
                 - gpt-neox-20b
                   - A 20 billion parameter autoregressive language model trained on the Pile.
                 - mpt-7b-instruct2
-                  - MPT-7B is a decoder-style transformer pretrained from scratch on 1T tokens of English text and code. This model was trained by IBM.
+                  - A decoder-style transformer pretrained from scratch on 1T tokens of English text and code. This model was trained by IBM.
                 - llama-2-13b-chat
-                  - Llama-2-13b-chat is an auto-regressive language model that uses an optimized transformer architecture.
+                  - An auto-regressive language model that uses an optimized transformer architecture.
                 - llama-2-70b-chat
-                  - Llama-2-70b-chat is an auto-regressive language model that uses an optimized transformer architecture.
+                  - An auto-regressive language model that uses an optimized transformer architecture.
           type: string
           default: "google/flan-ul2"
           enum:
@@ -109,11 +135,6 @@ components:
           default: "Enter your prompt here. Be specific to what you want Watsonx AI to do!"
         parameters:
           $ref: "#/components/schemas/parameters"
-        project_id:
-          x-ibm-disable: true
-          x-ibm-show: false
-          type: string
-          default: "a7d3a036-8d74-4d27-b312-3eada98ea204"
     response:
       description: Successful response
       type: object
@@ -124,8 +145,8 @@ components:
           items:
             type: object
             properties: 
-                generated_text:
-                    type: string
+              generated_text:
+                type: string
     errorResponse:
       description: Unsuccessful response
       type: object
@@ -137,78 +158,92 @@ components:
             type: object
             properties:
                 message:
-                    type: string
+                  description: Error Message
+                  x-ibm-label:: Error Message
+                  type: string
     parameters:
       type: object
       properties:
+        min_new_tokens:
+          x-ibm-label: Min Tokens
+          description: If stop sequences are given, they are ignored until minimum number of tokens are generated.
+          type: integer
+          nullable: true
+          default: null
+        max_new_tokens:
+          x-ibm-label: Max Tokens
+          description: Define the maximum number of tokens to generate.
+          type: integer
+          nullable: true
+          default: 700
         decoding_method:
           x-ibm-label: Decoding Method
-          description: Set decoding to "greedy" to always select words with the highest probability. Set decoding to "sample" to customize the variability of word selection.
-          #x-ibm-show: false
+          description: >
+
+            - Set decoding to "greedy" to always select words with the highest probability. 
+              - You can set the Max and Min New tokens (depending on the length of your prompt) and the Stop Sequence (cause the text generation to stop based on the output) 
+
+            - Set decoding to "sample" to customize the variability of word selection. 
+              - Using Sampling, you can set the Temperature, Top K and Top P values.
+          
           type: string
           default: "greedy"
           enum:
             - "greedy"
             - "sample"
-        max_new_tokens:
-          x-ibm-label: Max Tokens
-          description: Define the maximum number of tokens to generate.
-          #x-ibm-show: false
-          type: integer
-          format: int32
-          default: 700
-        min_new_tokens:
-          x-ibm-label: Min Tokens
-          description: If stop sequences are given, they are ignored until minimum number of tokens are generated.
-          #x-ibm-show: false
-          type: integer
-          format: int32
-          default: 100
         repetition_penalty:
           x-ibm-label: Repitition Penalty
           description: Penalty for repetition penalty. 1.00 means no penalty.
-          #x-ibm-show: false
           type: number
-          default: 2.00
+          multipleOf: 1.01
           minimum: 1.00
           maximum: 2.00
+          nullable: true
+          default: null
         temperature: 
           x-ibm-label: Temperature
           description: Sample Method - Control the creativity of generated text. Higher values will lead to more randomly generated outputs.
-          #x-ibm-show: false
+          x-ibm-show: false
           type: number
-          default: 0.18
+          multipleOf: 1.01
           minimum: 0.00
           maximum: 2.00
+          nullable: true
+          default: null
         top_k: 
           x-ibm-label: Top K
           description: Sample Method - Set the number of highest probability tokens to keep for top-k filtering. Lower values make it less likely the model will go off topic.
-          #x-ibm-show: false
+          x-ibm-show: false
           type: integer
-          format: int32
-          default: 50
           minimum: 0
           maximum: 100
+          nullable: true
+          default: null
         top_p: 
           x-ibm-label: Top P (Nucleus Sampling)
           description: Sample Method - If < 1.0, only the smallest set of probable tokens with probabilities that add up to "top-p" or higher are used.
-          #x-ibm-show: false
           type: number
-          default: 1.00
+          multipleOf: 1.01
           minimum: 0.00
           maximum: 1.00
-        # random_seed:
-        #   x-ibm-label: Random Seed
-        #   description: Sample Method- Controls the random sampling of the generated tokens when sampling is enabled. Setting the random seed to the same number for each generation ensures experimental repeatability.
-        #   x-ibm-show: false
-        #   type: integer
-        stop_sequences:
-          x-ibm-label: Stop Sequences
-          description: Stop sequences are one or more strings which will cause the text generation to stop if/when they are produced as part of the output. Stop sequences encountered prior to the minimum number of tokens being generated will be ignored.
-          type: array
-          #x-ibm-show: false
-          items:
-            type: string
+          nullable: true
+          default: null
+        random_seed:
+           x-ibm-label: Random Seed
+           description: Sample Method- Controls the random sampling of the generated tokens when sampling is enabled. Setting the random seed to the same number for each generation ensures experimental repeatability.
+           type: integer
+           nullable: true
+           default: null
+        # stop_sequences:
+        #   x-ibm-label: Stop Sequences
+        #   description: Stop sequences are one or more strings which will cause the text generation to stop if/when they are produced as part of the output. Stop sequences encountered prior to the minimum number of tokens being generated will be ignored.
+        #   type: array
+        #   items:
+        #     type: string          
+        #     description: Stop sequences are one or more strings which will cause the text generation to stop if/when they are produced as part of the output. Stop sequences encountered prior to the minimum number of tokens being generated will be ignored.
+        #   nullable: true
+        #   default: null
+        #   Currently unable to send a default null value for stop sequences while also defining it as an array. does not pass WXO validation.
   securitySchemes:
     bearerAuth:
       type: http

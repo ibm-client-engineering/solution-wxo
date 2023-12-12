@@ -1,0 +1,9 @@
+{
+  "label": "ServiceNow",
+  "position": 2,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "ServiceNow Integration with Watsonx Orchestrate using the JC - Watsonx Orchestrate ServiceNow API"
+  }
+}

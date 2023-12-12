@@ -1,9 +1,0 @@
-{
-  "label": "Import to Watsonx Orchestrate",
-  "position": 2,
-  "collapsed": false,
-  "link": {
-    "type": "generated-index",
-    "description": "How to import and stage the script in Watsonx Orchestrate"
-  }
-}
