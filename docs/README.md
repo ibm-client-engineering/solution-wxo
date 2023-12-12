@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /
-title: 'Watsonx Orchestrate Skill Solutions'
+title: 'Watsonx Orchestrate Solutions'
 ---
 #### Flight Path
 This is a living document for an adoption journey that synthesizes the best practices from IBM when using Watsonx Orchestrate and  **using integrated custom skills**. In this documentation, we will explore the requirements and the yaml scripts for Watsonx Orchestrate to fully integrate with a external applications.
