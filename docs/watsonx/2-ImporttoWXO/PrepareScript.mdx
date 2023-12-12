@@ -21,7 +21,7 @@ servers:
     4. Click the upload box and select the yaml file
     5. Click next
 
-4. Select the skills you need from the API (see <a href="/solution-wxo/GettingStarted/skills">Provided Skills</a>)
+4. Select the skills you need from the API (see <a href="/solution-wxo/servicenow/GettingStarted/skills">Provided Skills</a>)
 5. Click add on the bottom right
 
 The skills should now be available in the list of skills

@@ -20,7 +20,7 @@ The Watsonx Orchestrate ServiceNow API includes skills that can only be used in 
 
 ##### Composite Skill - Modify a specific Incident in ServiceNow
 
-See [Provided Composite Skills](/GettingStarted/skills#composite-skills)
+See [Provided Composite Skills](/servicenow/GettingStarted/skills#composite-skills)
 
 </details>
 

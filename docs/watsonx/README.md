@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 slug: /watsonx
-title: 'Watsonx Skills and Integration ((In Progress))'
+title: 'Watsonx Skills and Integration'
 ---

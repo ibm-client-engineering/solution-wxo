@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 slug: /servicenow
 title: 'ServiceNow Skills and Integration'
 ---
