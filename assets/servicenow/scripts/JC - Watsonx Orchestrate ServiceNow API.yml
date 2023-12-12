@@ -235,8 +235,10 @@ paths:
   #     responses:
   #       '204':
   #         description: Record deleted
+  #         x-ibm-nl-output-template: Record deleted
   #       '404':
   #         description: Record not found
+  #         x-ibm-nl-output-template: Record not found
   #Task table
   /api/now/table/sc_task/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
     get:
@@ -294,9 +296,11 @@ paths:
     #         $ref: '#/components/schemas/sysID'
     #   responses:
     #     '204':
-    #       description: Task deleted
+    #       description: Record deleted
+    #       x-ibm-nl-output-template: Record deleted
     #     '404':
-    #       description: Task not found
+    #       description: Record not found
+    #       x-ibm-nl-output-template: Record not found
   #Incident Table
   /api/now/table/incident/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
     get:
@@ -352,10 +356,12 @@ paths:
     #       schema:
     #         $ref: '#/components/schemas/sysID'
     #   responses:
-    #     '204':
-    #       description: Incident deleted
-    #     '404':
-    #       description: Incident not found
+    #    '204':
+    #       description: Record deleted
+    #       x-ibm-nl-output-template: Record deleted
+    #    '404':
+    #       description: Record not found
+    #       x-ibm-nl-output-template: Record not found
   /api/now/table/sn_km_mr_st_kb_knowledge/{sys_id}?sysparm_display_value=true&sysparm_exclude_reference_link=true:
     get:
       summary: JC - Retrieve a specific KB in ServiceNow (Composite only)
@@ -388,10 +394,11 @@ paths:
     #         $ref: '#/components/schemas/sysID'
     #   responses:
     #     '204':
-    #       description: KB deleted
+    #       description: Record deleted
+    #       x-ibm-nl-output-template: Record deleted
     #     '404':
-    #       description: KB not found
-components:
+    #        description: Record not found
+    #       x-ibm-nl-output-template: Record not found
   schemas:
     tableOptions:
       type: string

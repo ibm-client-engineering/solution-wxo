@@ -99,15 +99,17 @@ WXO name "JC - Modify a specific Incient in ServiceNow (Composite Skill)"
 ### Incomplete Skills
 
 <details>
-<summary>Non-Functional or Incomplete Skills</summary>
+<summary><strong>Non-Functional or Incomplete Skills</strong></summary>
 
-These are skills that you can see commented out in the script either unused or under construction.
+:::danger
+These are skills that you can see commented-out (#) in the script and are either unutilized or under construction. Enable and modify at your own risk.
+:::
 
-##### Skills Under Construction
+#### Skills Under Construction
 
 Create a new KB in ServiceNow (input schema needed for creating a KB)
 
-##### Skills that require the non-friendly input parameter for tableName
+#### Skills that require the non-friendly input parameter for tableName
 
 :::info
 To request table data from ServiceNow, the tableName (incidents, tasks or KBs) must be an input parameter. To do so the user would have to input the exact table name (e.g. for Tasks the user would need to input "sc_task" as the tableName) so these skills have been removed. These are to be used as reference and the path is to be used to specify the tableName needed.
