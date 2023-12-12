@@ -2,8 +2,5 @@
     "label": "ServiceNow",
     "position": 2,
     "collapsed": false,
-    "link": {
-      "type": "generated-index",
-      "description": "Stuff with Service Now"
-    }
+    "link": {"type": "doc", "id": "Introduction"},
   }
