@@ -1,6 +1,6 @@
 ---
 id: compositeskills
-sidebar_position: 4
+sidebar_position: 2
 title: Creating Composite Skills
 ---
 
@@ -25,7 +25,7 @@ See [Provided Composite Skills](/servicenow/GettingStarted/skills#composite-skil
 </details>
 
 ### Create a composite Skill Flow
-#### Steps:
+#### Steps
 To put these skills to use, create a composite skill flow:
 1. Click the hamburger menu icon at the top left of the page, then click "Skills"
 2. Next to the "Add skills" box on the right, click the downward facing arrow
@@ -43,7 +43,7 @@ You must add one of the [Top Level Skills](/servicenow/GettingStarted/skills#top
 graph LR;
     A(Top Level Skill) --> B(Composite Skill);
 ```
-#### Examples:
+#### Examples
 ```mermaid
 graph LR;
     A(JC - Retrieve all Tasks from ServiceNow) --> B(JC - Retrieve a specific Task from ServiceNow);
@@ -53,7 +53,7 @@ graph LR;
     A(JC - Retrieve all Incidents from ServiceNow) --> B(JC - Modify a specific Incident from ServiceNow);
 ```
 
-#### Steps:
+#### Steps
 1. Name your skill flow. For this example we'll use "JC - Retrieve a task from ServiceNow"
 2. Add one of the [Top Level Skills](/servicenow/GettingStarted/skills#top-level-skills) to your skill flow
     :::note
