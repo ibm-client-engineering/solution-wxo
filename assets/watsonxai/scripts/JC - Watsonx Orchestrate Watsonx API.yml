@@ -4,7 +4,7 @@ info:
   contact:
     name: Joe Cosenza
     email: jcosenz@us.ibm.com
-    url: https://ibm-client-engineering.github.io/solution-wxo
+    url: https://ibm-client-engineering.github.io/solution-wxo/watsonx
   x-ibm-application-name: JC - Watsonx API
   x-ibm-application-id: JC-WatsonxAPI
   description: Allows you to send API calls to Watsonx

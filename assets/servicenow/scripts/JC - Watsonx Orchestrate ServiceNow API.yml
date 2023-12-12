@@ -4,7 +4,7 @@ info:
   contact:
     name: Joe Cosenza
     email: jcosenz@us.ibm.com
-    url: https://ibm-client-engineering.github.io/solution-wxo
+    url: https://ibm-client-engineering.github.io/solution-wxo/servicenow
   #Still need to research/fix:
     #1) Delete call result output on WXO - Returns empty object for success - WXO says failure
     #2) Friendly input parameters for tableName
