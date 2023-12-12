@@ -4,29 +4,27 @@ sidebar_position: 4
 title: Creating Composite Skills
 ---
 
-### Composite Skills
-The Watsonx Orchestrate ServiceNow API includes skills that can only be used in a composite Skill Flow.
+### Create a composite Skill Flow
 
 <details>
 <summary><b>List of Provided Composite Skills</b></summary>
 
-##### Composite Skill - Retrieve a Task record in ServiceNow
-
-##### Composite Skill - Retrieve a specific KB in ServiceNow
-
-##### Composite Skill - Retrieve a Incident record in ServiceNow
-
-##### Composite Skill - Modify a specific Task in ServiceNow
-
-##### Composite Skill - Modify a specific Incident in ServiceNow
-
+<strong>Composite Skill - Retrieve a Task record in ServiceNow</strong>
+<br></br>
+<strong>Composite Skill - Retrieve a specific KB in ServiceNow</strong>
+<br></br>
+<strong>Composite Skill - Retrieve a Incident record in ServiceNow</strong>
+<br></br>
+<strong>Composite Skill - Modify a specific Task in ServiceNow</strong>
+<br></br>
+<strong>Composite Skill - Modify a specific Incident in ServiceNow</strong>
+<br></br><br></br>
 See [Provided Composite Skills](/servicenow/GettingStarted/skills#composite-skills)
 
 </details>
-
-### Create a composite Skill Flow
+The Watsonx Orchestrate ServiceNow API includes skills that can only be used in a composite Skill Flow. To put these skills to use, create a composite skill flow.
 #### Steps
-To put these skills to use, create a composite skill flow:
+
 1. Click the hamburger menu icon at the top left of the page, then click "Skills"
 2. Next to the "Add skills" box on the right, click the downward facing arrow
 3. Click "Create a Skill flow"
