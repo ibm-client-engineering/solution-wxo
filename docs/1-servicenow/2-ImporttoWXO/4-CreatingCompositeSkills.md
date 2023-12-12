@@ -30,12 +30,12 @@ The Watsonx Orchestrate ServiceNow API includes skills that can only be used in 
 3. Click "Create a Skill flow"
 
 An empty skil flow has been created. Now we must name and add skills to the skill flow
-:::tip
-In order to add any skills to a skill flow, they must already be added to your [Personal Skills](addingskills)
+:::warning
+In order to add any skills to a skill flow, they must already be added to your [personal skills](addingskills). Ensure that all skills you wish to use in composite skill flows have been added to your personal skills list.
 :::
 
 ### Adding skills to the composite skill flow
-You must add one of the [Top Level Skills](/servicenow/GettingStarted/skills#top-level-skills) to its correesponding [Composite Skills](/servicenow/GettingStarted/skills/#composite-skills) in order to properly flow the inputs and outoputs as such:
+You must add one of the [Top Level Skills](/servicenow/GettingStarted/skills#top-level-skills) to the corresponding [Composite Skills](/servicenow/GettingStarted/skills/#composite-skills) in order to properly flow the inputs and outoputs as such:
 
 ```mermaid
 graph LR;
@@ -77,8 +77,16 @@ graph LR;
     1. From the home screen, towards the bottom, click the "Add skills from the catalog" box
     2. Find your composite skill from the list and click "Add skill"
 
-Your composite skill is now created. This enables us to use these ServiceNow skills and their outputs in a skill flow with any other Watsonx Orchestrate skill as such:
+Your composite skill is now created. 
+:::tip
+This enables us to use these ServiceNow skills and their outputs in a skill flow with any other Watsonx Orchestrate skill as such:
+```mermaid
+graph LR;
+    A(Top Level Skill) --> B(Composite Skill) --> C(Any Other Skill);
+```
+Use the Composite content output as input for this next skill. Example:
 ```mermaid
 graph LR;
     A(JC - Retrieve all KBs from ServiceNow) --> B(JC - Retrieve a specific KB from ServiceNow) --> C(Send an email with the details of the KB in the body of the email);
 ```
+:::
