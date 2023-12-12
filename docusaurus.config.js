@@ -89,6 +89,7 @@ async function createconfig() {
             // editUrl: "https://github.com/facebook/docusaurus/edit/main/website/",
             // Advanced use-case: functional editUrl
             editUrl: ({ locale, blogDirPath, blogPath, permalink }) =>
+
               "https://github.com/ibm-client-engineering/solution-wxo/edit/main/${blogDirPath}/${blogPath}",
             blogTitle: "Journey Log",
             blogSidebarTitle: "All our logs",
@@ -143,8 +144,6 @@ async function createconfig() {
             {to: "blog", label: "Flight Logs", position: "right"},
             {
               href: "https://github.com/ibm-client-engineering/solution-wxo",
-              className: "header-github-link",
-              position: "right",
             },
           ],
         },
