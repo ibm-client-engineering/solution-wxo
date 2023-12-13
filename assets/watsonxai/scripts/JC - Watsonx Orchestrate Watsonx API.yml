@@ -195,7 +195,6 @@ components:
           x-ibm-label: Repitition Penalty
           description: Penalty for repetition penalty. 1.00 means no penalty.
           type: number
-          multipleOf: 1.01
           minimum: 1.00
           maximum: 2.00
           nullable: true
@@ -205,7 +204,6 @@ components:
           description: Sample Method - Control the creativity of generated text. Higher values will lead to more randomly generated outputs.
           x-ibm-show: false
           type: number
-          multipleOf: 1.01
           minimum: 0.00
           maximum: 2.00
           nullable: true
@@ -223,7 +221,6 @@ components:
           x-ibm-label: Top P (Nucleus Sampling)
           description: Sample Method - If < 1.0, only the smallest set of probable tokens with probabilities that add up to "top-p" or higher are used.
           type: number
-          multipleOf: 1.01
           minimum: 0.00
           maximum: 1.00
           nullable: true
