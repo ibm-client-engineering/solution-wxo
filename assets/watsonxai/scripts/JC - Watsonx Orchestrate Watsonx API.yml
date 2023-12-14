@@ -31,7 +31,6 @@ paths:
       description: Send a prompt to Watsonx Prompt Lab
       operationId: sendPrompt
       requestBody:
-        description: Send generation request
         content:
           application/json:
             schema:
