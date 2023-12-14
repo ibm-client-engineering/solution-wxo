@@ -3765,7 +3765,7 @@ paths:
                       curl = curl_easy_init();
                       if(curl) {
                         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
-                        curl_easy_setopt(curl, CURLOPT_URL, "https://us-south.ml.cloud.ibm.com/ml/v4/deployment_jobs?version=2019-10-25");
+                         curl_easy_setopt(curl, CURLOPT_URL, "https://us-south.ml.cloud.ibm.com/ml/v4/deployment_jobs?version=2019-10-25");
                         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
                         curl_easy_setopt(curl, CURLOPT_DEFAULT_PROTOCOL, "https");
                         struct curl_slist *headers = NULL;
