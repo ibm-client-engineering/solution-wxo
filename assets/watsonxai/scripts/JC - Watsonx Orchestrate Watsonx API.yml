@@ -78,21 +78,20 @@ components:
           x-ibm-show: false
           type: string
           #Update the default value to your project's ID
-          default: "e4f278c2-464c-4568-b5af-d0556f5120b6"
+          default: "06cd2f5b-3aad-4a38-af10-86bf61d0c094"
         model_id:
           x-ibm-label: Foundation Model
           description: >
             Select a model that best fits your needs. All models support English text. Check the model information for other supported languages.
             
             - The Granite series of models are a family of IBM-trained decoder-only models used for text generation, summarization, question and answer, classification, and extraction.
-                - granite-13b-chat-v1
-                - granite-13b-chat-v2
-                - granite-13b-instruct-v1
-                - granite-13b-instruct-v2
+              - granite-13b-chat-v1
+              - granite-13b-chat-v2
+              - granite-13b-instruct-v1
+              - granite-13b-instruct-v2
 
-              - Non IBM Models
-                - Disclaimer: These models are a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx
-                
+            - Non IBM Models
+              - Disclaimer: These models are a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx
                 - flan-ul2-20b
                   - An encoder decoder model based on the T5 architecture and instruction-tuned using the Fine-tuned Language Net.
                 - flan-t5-xxl-11b
@@ -112,7 +111,7 @@ components:
                 - llama-2-70b-chat
                   - An auto-regressive language model that uses an optimized transformer architecture.
           type: string
-          default: "google/flan-ul2"
+          default: "bigscience/mt0-xxl-13b"
           enum:
             - "google/flan-ul2"
             - "google/flan-t5-xxl"
