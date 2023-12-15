@@ -1,0 +1,46 @@
+---
+id: uploadscript
+sidebar_position: 1
+title: Preparing the Script
+---
+
+### Download and prepare the yaml
+#### Steps
+1. Download the latest .yaml file <a href="https://github.com/ibm-client-engineering/solution-wxo/blob/8f599c8eb4847c41f9a4d549a7fb5d4a342ec9d4/assets/watsonxai/scripts/JC%20-%20Watsonx%20Orchestrate%20Watsonx%20API.yml">here</a>
+2. Open the script and replace the Watsonx Project ID with your project ID:
+
+```yaml
+properties:
+  project_id:
+    x-ibm-disable: true
+    x-ibm-show: false
+    type: string
+    #Update the default value to your project's Project ID
+    default: "<your project ID>"
+    #Example: default: "06cd2f5b-3aad-4a38-af10-86bf61d0c094"
+```
+:::tip
+To find your project ID in Watsonx, select to your project, click "Manage", and should be listed under "General" > "Details" > "Project ID"
+:::
+
+3. Upload the script to your Watsonx Orchestrate instance
+    1. Click the hamburger menu icon at the top left of the page, then click "Skills"
+    2. Click "Add skills" at the top right of the page
+    3. Click the "From files" tab
+    4. Click the upload box and select the yaml file
+    5. Click next
+
+4. Select the skills you need from the API (see <a href="/solution-wxo/watsonx/GettingStarted/skills">Provided Skills</a>)
+5. Click add on the bottom right
+
+Each skill should now be available in your list of skills and are ready to be staged.
+
+:::warning
+Double check the version level in the path to ensure it matches your Watsonx version - See https://cloud.ibm.com/apidocs/machine-learning#versioning 
+
+If they do not match you may have to update the path query to the available version.
+```yaml
+paths:
+  "/ml/v1-beta/generation/text?version=2023-05-29":
+```
+:::
