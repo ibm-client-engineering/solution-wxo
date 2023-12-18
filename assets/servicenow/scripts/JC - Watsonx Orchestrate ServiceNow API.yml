@@ -399,11 +399,7 @@ paths:
     #     '404':
     #        description: Record not found
     #       x-ibm-nl-output-template: Record not found
-<<<<<<< HEAD
 components:
-=======
-components:
->>>>>>> 1dc47eca909536018695c830284a78684082d278
   schemas:
     tableOptions:
       type: string
