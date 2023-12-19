@@ -13,7 +13,7 @@ info:
 externalDocs:
   url: https://cloud.ibm.com/apidocs/watson-data-api#connections
 servers:
-  - url: "https://us-south.ml.cloud.ibm.com"
+  - url: "https://YourWatsonxServer.cloud.ibm.com"
   #see https://cloud.ibm.com/apidocs/machine-learning#endpoint-url
 security:
 #To authorize in Watsonx Orchestrate you must connect the app with a bearer token
@@ -111,7 +111,7 @@ components:
                 - llama-2-70b-chat
                   - An auto-regressive language model that uses an optimized transformer architecture.
           type: string
-          default: "bigscience/mt0-xxl-13b"
+          default: "bigscience/mt0-xxl"
           enum:
             - "google/flan-ul2"
             - "google/flan-t5-xxl"

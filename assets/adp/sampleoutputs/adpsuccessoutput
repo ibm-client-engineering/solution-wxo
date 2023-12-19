@@ -1,0 +1,24 @@
+{ 
+  "status": {
+    "code": 202,
+    "messageId": "CIWCA50000",
+    "message": "Success"
+  },
+  "result": [
+    {
+      "status": {
+        "code": 202,
+        "messageId": "CIWCA11106",
+        "message": "Content Analyzer request was created"
+      },
+      "data": {
+        "message": "json processing request was created successful",
+        "fileNameIn": "Legal Invoice 15.pdf",
+        "analyzerId": "ac3afc50-2c52-11ec-b296-c35cda005f89",
+        "type": [
+          "json"
+        ]
+      }  
+    }
+  ]
+}

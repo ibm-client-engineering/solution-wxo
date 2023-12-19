@@ -19,7 +19,7 @@ info:
 externalDocs:
   url: https://docs.servicenow.com/?context=CSHelp:REST-Table-API
 servers:
-  - url: https://dev213519.service-now.com/
+  - url: https://YourServiceNowInstance.service-now.com/
 security:
   - basicAuth: []
 paths:  
