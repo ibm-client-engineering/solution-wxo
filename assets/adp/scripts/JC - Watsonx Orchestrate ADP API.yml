@@ -12,10 +12,7 @@ info:
 externalDocs:
   url: https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=integrations-automation-document-processing-api
 servers:
-  - url: "https://{serverName}.cloud.ibm.com"
-    variables:
-      serverName:
-        default: "ADP Server"
+  - url: "https://YourADPServer.cloud.ibm.com"
 security:
   - bearerAuth: []
 paths:

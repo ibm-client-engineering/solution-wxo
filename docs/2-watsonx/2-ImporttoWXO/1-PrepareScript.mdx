@@ -7,7 +7,16 @@ title: Preparing the Script
 ### Download and prepare the yaml
 #### Steps
 1. Download the latest .yaml file <a href="https://github.com/ibm-client-engineering/solution-wxo/blob/8f599c8eb4847c41f9a4d549a7fb5d4a342ec9d4/assets/watsonxai/scripts/JC%20-%20Watsonx%20Orchestrate%20Watsonx%20API.yml">here</a>
-2. Open the script and replace the Watsonx Project ID with your project ID:
+2. Open the script and replace the Server and Watsonx Project ID:
+
+`server`
+
+```yaml
+servers:
+  - url: "https://YourWatsonxServer.cloud.ibm.com"
+  #Put your Watsonx Server URL between the quotes
+```
+`project_id`
 
 ```yaml
 properties:
@@ -17,8 +26,9 @@ properties:
     type: string
     #Update the default value to your project's Project ID
     default: "<your project ID>"
-    #Example: default: "06cd2f5b-3aad-4a38-af10-86bf61d0c094"
+    #Put your project ID between the quotes
 ```
+
 :::tip
 To find your project ID in Watsonx, select to your project, click "Manage", and should be listed under "General" > "Details" > "Project ID"
 :::
