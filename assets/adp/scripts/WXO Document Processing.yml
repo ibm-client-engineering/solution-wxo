@@ -9,6 +9,8 @@ info:
   x-ibm-skill-type: imported
   x-ibm-skill-subtype: wo-identity
   version: '1.0'
+externalDocs:
+  url: "https://www.ibm.com/docs/en/watson-orchestrate?topic=skills-building-document-processing"
 paths:
   /dps/v1/text_extraction:
     post:
