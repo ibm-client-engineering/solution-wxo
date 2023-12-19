@@ -1,0 +1,683 @@
+openapi: 3.0.2
+info:
+  title: Document Processing
+  description: Extract text from documents and detect fields and entities.
+  x-ibm-annotations: 'true'
+  x-ibm-application-icon: >-
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 32
+    32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><path
+    id="extract-text_00000163056817461291470170000003488923497178375090_"
+    d="M28.255,16.746l-0.51,0.509l1.386,1.385h-3.77V7
+    c0-0.096-0.038-0.187-0.105-0.254l-6-6C19.188,0.678,19.096,0.64,19,0.64H1C0.801,0.64,0.64,0.801,0.64,1v30
+    c0,0.199,0.161,0.36,0.36,0.36h24c0.199,0,0.36-0.161,0.36-0.36V19.36h3.77l-1.386,1.385l0.51,0.51L30.509,19L28.255,16.746z
+    M19.36,1.869l4.771,4.771H19.36V1.869z
+    M24.64,18.64H5v0.721h19.64V30.64H1.36V1.36h17.28V7c0,0.199,0.161,0.36,0.36,0.36h5.64
+    C24.64,7.36,24.64,18.64,24.64,18.64z
+    M18.745,13.254l0.51-0.509L21.509,15l-2.254,2.255l-0.51-0.509l1.386-1.386L5,15.36v-0.72
+    h15.131L18.745,13.254z
+    M20.131,26.64l-1.386-1.385l0.51-0.51L21.509,27l-2.254,2.255l-0.51-0.51l1.386-1.385H5v-0.72H20.131z
+    M5,22.64h10.13l-1.385-1.385l0.509-0.51L16.509,23l-2.255,2.255l-0.509-0.51l1.385-1.385H5V22.64z"/><rect
+    id="_Transparent_Rectangle" style="fill:none;" width="32"
+    height="32"/></svg>
+  x-ibm-application-name: Document Processing
+  x-ibm-application-id: documentProcessing
+  x-ibm-skill-type: imported
+  x-ibm-skill-subtype: wo-identity
+  version: '1.0'
+paths:
+  /dps/v1/text_extraction:
+    post:
+      tags:
+        - document processing
+      summary: Extract text
+      description: from a PDF, Word, images, or PowerPoint file
+      operationId: docproc_text_extract_json
+      parameters:
+        - name: callbackUrl
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uri
+            minLength: 1
+            maxLength: 2083
+            title: Callback URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RichDocumentContent'
+      callbacks:
+        postResponse:
+          '{$request.header.callbackUrl}':
+            post:
+              tags:
+                - callback
+              summary: The async callback to be sent when the text extraction completes
+              description: Async callback endpoint
+              operationId: async_callback_with_TextExtractionResponse
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/CallbackOutputTextExtractionResponse
+              responses:
+                '200':
+                  description: The callback was received successfully.
+                '202':
+                  description: The callback was received successfully.
+                '422':
+                  description: An error occurred, preventing the callback.
+                '500':
+                  description: An error occurred, preventing the callback.
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /dps/v1/document_classification:
+    post:
+      tags:
+        - document processing
+      summary: Classify a document
+      description: into one of the trained classes
+      operationId: docproc_document_classification_json
+      parameters:
+        - name: callbackUrl
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uri
+            minLength: 1
+            maxLength: 2083
+            title: Callback URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RichDocumentContent'
+      callbacks:
+        postResponse:
+          '{$request.header.callbackUrl}':
+            post:
+              tags:
+                - callback
+              summary: The async callback to be sent when the text extraction completes
+              description: Async callback endpoint
+              operationId: async_callback_with_DocumentClassificationResponse
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/CallbackOutputDocumentClassificationResponse
+              responses:
+                '200':
+                  description: The callback was received successfully.
+                '202':
+                  description: The callback was received successfully.
+                '422':
+                  description: An error occurred, preventing the callback.
+                '500':
+                  description: An error occurred, preventing the callback.
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /dps/v1/pii_entities_extraction:
+    post:
+      tags:
+        - document processing
+      summary: Extract personal identifiable information (PII)
+      description: from text
+      operationId: docproc_pii_entities_json
+      parameters:
+        - name: callbackUrl
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uri
+            minLength: 1
+            maxLength: 2083
+            title: Callback URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PIITextContent'
+      callbacks:
+        postResponse:
+          '{$request.header.callbackUrl}':
+            post:
+              tags:
+                - callback
+              summary: The async callback to be sent when the text extraction completes
+              description: Async callback endpoint
+              operationId: async_callback_with_PIIEntityResponse
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/CallbackOutputPIIEntityResponse'
+              responses:
+                '200':
+                  description: The callback was received successfully.
+                '202':
+                  description: The callback was received successfully.
+                '422':
+                  description: An error occurred, preventing the callback.
+                '500':
+                  description: An error occurred, preventing the callback.
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /dps/v1/kvp_invoices_extraction:
+    post:
+      tags:
+        - document processing
+      summary: Extract key-value pairs (KVPs)
+      description: from invoice documents (PDF, Word, images, or PowerPoint)
+      operationId: docproc_kvp_invoices_extract_json
+      parameters:
+        - name: callbackUrl
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uri
+            minLength: 1
+            maxLength: 2083
+            title: Callback URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RichDocumentContent'
+      callbacks:
+        postResponse:
+          '{$request.header.callbackUrl}':
+            post:
+              tags:
+                - callback
+              summary: The async callback to be sent when the text extraction completes
+              description: Async callback endpoint
+              operationId: async_callback_with_KVPInvoicesExtractionResponse
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/CallbackOutputKVPInvoicesExtractionResponse
+              responses:
+                '200':
+                  description: The callback was received successfully.
+                '202':
+                  description: The callback was received successfully.
+                '422':
+                  description: An error occurred, preventing the callback.
+                '500':
+                  description: An error occurred, preventing the callback.
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+components:
+  schemas:
+    CallbackOutputDocumentClassificationResponse:
+      properties:
+        output:
+          description: The output watsonx Orchestrate requires
+          $ref: '#/components/schemas/DocumentClassificationResponse'
+        runtimeException:
+          description: The error watsonx Orchestrate requires
+          $ref: '#/components/schemas/ErrorResponse'
+      type: object
+      title: CallbackOutputDocumentClassificationResponse
+      x-ibm-response-wrapper: true
+    CallbackOutputKVPInvoicesExtractionResponse:
+      properties:
+        output:
+          description: The output watsonx Orchestrate requires
+          $ref: '#/components/schemas/KVPInvoicesExtractionResponse'
+        runtimeException:
+          description: The error watsonx Orchestrate requires
+          $ref: '#/components/schemas/ErrorResponse'
+      type: object
+      title: CallbackOutputKVPInvoicesExtractionResponse
+      x-ibm-response-wrapper: true
+    CallbackOutputPIIEntityResponse:
+      properties:
+        output:
+          description: The output watsonx Orchestrate requires
+          $ref: '#/components/schemas/PIIEntityResponse'
+        runtimeException:
+          description: The error watsonx Orchestrate requires
+          $ref: '#/components/schemas/ErrorResponse'
+      type: object
+      title: CallbackOutputPIIEntityResponse
+      x-ibm-response-wrapper: true
+    CallbackOutputTextExtractionResponse:
+      properties:
+        output:
+          description: The output watsonx Orchestrate requires
+          $ref: '#/components/schemas/TextExtractionResponse'
+        runtimeException:
+          description: The error watsonx Orchestrate requires
+          $ref: '#/components/schemas/ErrorResponse'
+      type: object
+      title: CallbackOutputTextExtractionResponse
+      x-ibm-response-wrapper: true
+    DocumentClassification:
+      properties:
+        class_name:
+          title: Class
+          description: The predicted document class name
+          $ref: '#/components/schemas/DocumentClassificationName'
+        confidence:
+          type: number
+          title: Confidence
+          description: The confidence of the classification
+      type: object
+      required:
+        - class_name
+        - confidence
+      title: DocumentClassification
+    DocumentClassificationName:
+      type: string
+      enum:
+        - bill_of_lading
+        - contract
+        - invoice
+        - purchase_order
+        - utility_bill
+        - tax_form
+      title: Class name
+      description: The name of the document class
+    DocumentClassificationResponse:
+      properties:
+        class_name:
+          title: Class
+          description: The predicted document class name
+          $ref: '#/components/schemas/DocumentClassificationName'
+        confidence:
+          type: number
+          title: Confidence
+          description: The confidence of the classification
+        classes:
+          items:
+            $ref: '#/components/schemas/DocumentClassification'
+          type: array
+          title: Classifications
+          description: A list of classification labels
+      type: object
+      required:
+        - class_name
+        - confidence
+        - classes
+      title: DocumentClassificationResponse
+      x-ibm-parameter-wrapper: true
+    ErrorResponse:
+      properties:
+        code:
+          type: integer
+          title: Code
+          description: The HTTP error status code
+          default: 400
+        message:
+          type: string
+          title: Message
+          description: A message describing the error
+        type:
+          type: string
+          title: Type
+          description: Additional information about the error
+      type: object
+      required:
+        - message
+        - type
+      title: ErrorResponse
+    KVPInvoicesExtractionResponse:
+      properties:
+        BANK_ACCOUNT_NUMBER:
+          title: Bank account number
+          default: ''
+          type: string
+        BANK_NAME:
+          title: Bank name
+          default: ''
+          type: string
+        BILL_TO_ADDRESS:
+          title: Bill-to address
+          default: ''
+          type: string
+        BILL_TO_NAME:
+          title: Bill-to name
+          default: ''
+          type: string
+        INVOICE_DATE:
+          title: Invoice date
+          default: ''
+          type: string
+        INVOICE_NUMBER:
+          title: Invoice number
+          default: ''
+          type: string
+        INVOICE_TOTAL:
+          title: Invoice total
+          default: ''
+          type: string
+        PAYMENT_DUE_DATE:
+          title: Payment due date
+          default: ''
+          type: string
+        PAYMENT_TERMS:
+          title: Payment terms
+          default: ''
+          type: string
+        PURCHASE_ORDER_NUMBER:
+          title: Purchase order number
+          default: ''
+          type: string
+        SHIP_TO_ADDRESS:
+          title: Ship-to address
+          default: ''
+          type: string
+        SHIP_TO_NAME:
+          title: Ship-to name
+          default: ''
+          type: string
+        SHIPPING_AMOUNT:
+          title: Shipping amount
+          default: ''
+          type: string
+        SUBTOTAL:
+          title: Subtotal
+          default: ''
+          type: string
+        TAX_AMOUNT:
+          title: Tax amount
+          default: ''
+          type: string
+        TAX_RATE:
+          title: Tax rate
+          default: ''
+          type: string
+        TAX_TYPE:
+          title: Tax type
+          default: ''
+          type: string
+        VENDOR_ADDRESS:
+          title: Vendor address
+          default: ''
+          type: string
+        VENDOR_NAME:
+          title: Vendor name
+          default: ''
+          type: string
+      type: object
+      title: KVPInvoicesExtractionResponse
+      x-ibm-parameter-wrapper: true
+    LanguageCode:
+      type: string
+      enum:
+        - en
+        - fr
+      title: Language
+      default: en
+      description: ISO 639-1 language code (for example en)
+    PIIEntity:
+      properties:
+        text:
+          type: string
+          title: Text
+          description: The text fragment that was detected as potential PII
+        type:
+          type: string
+          title: Type
+          description: >-
+            The type of the PII detected. Possible PII types: 'Person',
+            'Location', 'BankAccountNumber.CreditCardNumber.Amex',
+            'BankAccountNumber.CreditCardNumber.Master',
+            'BankAccountNumber.CreditCardNumber.Other',
+            'BankAccountNumber.CreditCardNumber.Visa', 'EmailAddress',
+            'IPAddress', 'PhoneNumber', 'BankAccountNumber.IBAN.AT',
+            'BankAccountNumber.IBAN.BE', 'BankAccountNumber.IBAN.BG',
+            'BankAccountNumber.IBAN.CH', 'BankAccountNumber.IBAN.CY',
+            'BankAccountNumber.IBAN.CZ', 'BankAccountNumber.IBAN.DE',
+            'BankAccountNumber.IBAN.DK', 'BankAccountNumber.IBAN.EE',
+            'BankAccountNumber.IBAN.ES', 'BankAccountNumber.IBAN.FI',
+            'BankAccountNumber.IBAN.FR', 'BankAccountNumber.IBAN.GR',
+            'BankAccountNumber.IBAN.HR', 'BankAccountNumber.IBAN.HU',
+            'BankAccountNumber.IBAN.IE', 'BankAccountNumber.IBAN.IS',
+            'BankAccountNumber.IBAN.IT', 'BankAccountNumber.IBAN.LI',
+            'BankAccountNumber.IBAN.LT', 'BankAccountNumber.IBAN.LU',
+            'BankAccountNumber.IBAN.LV', 'BankAccountNumber.IBAN.MT',
+            'BankAccountNumber.IBAN.NL', 'BankAccountNumber.IBAN.NO',
+            'BankAccountNumber.IBAN.PL', 'BankAccountNumber.IBAN.PT',
+            'BankAccountNumber.IBAN.RO', 'BankAccountNumber.IBAN.SE',
+            'BankAccountNumber.IBAN.SK', 'BankAccountNumber.Routing.US',
+            'Location.PostalAddress.DE', 'Location.PostalAddress.ES',
+            'Location.PostalAddress.FR', 'Location.PostalAddress.GB',
+            'Location.PostalAddress.IT', 'Location.PostalAddress.US',
+            'NationalNumber.NationalID.BE', 'NationalNumber.NationalID.BG',
+            'NationalNumber.NationalID.CH', 'NationalNumber.NationalID.CH.Old',
+            'NationalNumber.NationalID.CZ', 'NationalNumber.NationalID.DK',
+            'NationalNumber.NationalID.EE', 'NationalNumber.NationalID.ES',
+            'NationalNumber.NationalID.FI', 'NationalNumber.NationalID.GB.Old',
+            'NationalNumber.NationalID.GR', 'NationalNumber.NationalID.HR',
+            'NationalNumber.NationalID.HU', 'NationalNumber.NationalID.IE',
+            'NationalNumber.NationalID.IS', 'NationalNumber.NationalID.IT',
+            'NationalNumber.NationalID.LT', 'NationalNumber.NationalID.LV',
+            'NationalNumber.NationalID.NL', 'NationalNumber.NationalID.NO',
+            'NationalNumber.NationalID.NO.Old', 'NationalNumber.NationalID.PL',
+            'NationalNumber.NationalID.PT', 'NationalNumber.NationalID.PT.Old',
+            'NationalNumber.NationalID.RO', 'NationalNumber.NationalID.SE',
+            'NationalNumber.NationalID.SK', 'NationalNumber.Passport.AT',
+            'NationalNumber.Passport.BE', 'NationalNumber.Passport.CH',
+            'NationalNumber.Passport.DE', 'NationalNumber.Passport.ES',
+            'NationalNumber.Passport.FI', 'NationalNumber.Passport.FR',
+            'NationalNumber.Passport.GB', 'NationalNumber.Passport.GR',
+            'NationalNumber.Passport.IE', 'NationalNumber.Passport.IT',
+            'NationalNumber.Passport.NL', 'NationalNumber.Passport.NO',
+            'NationalNumber.Passport.PL', 'NationalNumber.Passport.SE',
+            'NationalNumber.Passport.US',
+            'NationalNumber.SocialInsuranceNumber.DE',
+            'NationalNumber.SocialInsuranceNumber.FR',
+            'NationalNumber.SocialSecurityNumber.GB.NHS',
+            'NationalNumber.SocialSecurityNumber.GB.NINO',
+            'NationalNumber.TaxID.AT', 'NationalNumber.TaxID.CY',
+            'NationalNumber.TaxID.CZ', 'NationalNumber.TaxID.ES',
+            'NationalNumber.TaxID.GR', 'NationalNumber.TaxID.HR',
+            'NationalNumber.TaxID.HU', 'NationalNumber.TaxID.IE',
+            'NationalNumber.TaxID.LU', 'NationalNumber.TaxID.PL',
+            'NationalNumber.TaxID.PT', 'NationalNumber.TaxID.RO',
+            'NationalNumber.TaxID.SK', 'NationalNumber.USTaxIDNumber.US'
+        location:
+          title: Location
+          description: The offsets of the PII entity text
+          $ref: '#/components/schemas/PIISpan'
+      type: object
+      required:
+        - text
+        - type
+        - location
+      title: PIIEntity
+    PIIEntityResponse:
+      properties:
+        entities:
+          items:
+            $ref: '#/components/schemas/PIIEntity'
+          type: array
+          title: Entities
+          description: A list of PII entities
+      type: object
+      required:
+        - entities
+      title: PIIEntityResponse
+      x-ibm-parameter-wrapper: true
+    PIISpan:
+      properties:
+        begin:
+          type: integer
+          title: Start
+          description: >-
+            The start offset of the mention. The first character of the
+            extracted text is at offset 0.
+        end:
+          type: integer
+          title: End
+          description: >-
+            The end offset of the mention. The last character of the mention is
+            at offset - 1.
+      type: object
+      required:
+        - begin
+        - end
+      title: PIISpan
+    PIITextContent:
+      properties:
+        text:
+          type: string
+          title: Text
+          description: The text potential PII entities are extracted from
+        language:
+          title: Language
+          default: en
+          $ref: '#/components/schemas/LanguageCode'
+      type: object
+      required:
+        - text
+      title: PIITextContent
+      x-ibm-parameter-wrapper: true
+    RichDocumentContent:
+      properties:
+        content:
+          type: string
+          format: binary
+          title: File content
+          description: >-
+            The content can be a .pdf, MS Office (.doc, .docx, .ppt, .pptx), or
+            image file (.jpg, .png, .tiff).
+          x-ibm-content: {}
+        language:
+          title: Language
+          description: ISO 639-1 language code (for example en)
+          default: en
+          $ref: '#/components/schemas/LanguageCode'
+      type: object
+      required:
+        - content
+      title: RichDocumentContent
+      x-ibm-parameter-wrapper: true
+    TextExtractionResponse:
+      properties:
+        text:
+          type: string
+          title: Extracted text
+          description: The text extracted from the input document
+      type: object
+      required:
+        - text
+      title: TextExtractionResponse
+      x-ibm-parameter-wrapper: true
+  securitySchemes:
+    IBM-WO-JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: IBM-Watsonx-Orchestrate-JWT
+servers:
+  - url: https://dl.watson-orchestrate.ibm.com/asb
+security:
+  - IBM-WO-JWT: []
