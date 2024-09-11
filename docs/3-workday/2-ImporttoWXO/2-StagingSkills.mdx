@@ -1,0 +1,35 @@
+---
+id: stagingskills
+sidebar_position: 2
+title: Staging the Skills
+---
+## Skill Staging
+Before we can use the newly imported skills, they must be "enhanced" in order to publish. This gives us the opportunity to stage the skill to properly display the output. The API responds with the AI's generated text. The property `generated_text` residing within the array `results` requires the header to be named.
+
+#### Steps
+1. Click the hamburger menu icon at the top left of the page, then click "Skills"
+2. Using the search bar, search for "JC - ". This will show all skills denoted with name JC - like our Watsonx skills
+3. Click the 3 dotted menu icon on the right and proceed with the following steps:
+    1. Click enhance
+    2. Click the output tab
+    3. Click "edit response"
+    4. Type in "Generated Text" for the generated text response, or a different user-friendly name for the Watsonx response.
+
+:::tip
+The script by default labels the `results` table "Watsonx AI Says:" by defining an `x-ibm-label` property. This can only be updated in the script. If no `x-ibm-label` property is given, the table will be displayed as "results" by default.
+```yaml
+response:
+    description: Successful response
+    type: object
+    properties:
+    results:
+        x-ibm-label: 'Watsonx AI Says:'
+        type: array
+        items:
+        type: object
+        properties: 
+            generated_text:
+            type: string 
+```
+Feel free to change the value for `x-ibm-label` from "Watsonx AI Says:" to whatever you'd like. However both the array and the array header for generated_text (from the steps above) should be named for a user-friendly output, otherwise they default to their property names and display them as "results" and "generated_text".
+:::

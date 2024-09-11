@@ -1,0 +1,477 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "API documentation for IBM Workday Instance Skills.",
+      "version": "1.0.0",
+      "title": "JC - Watsonx Orchestrate Workday API",
+      "x-workday-internal-source": "xo",
+      "x-workday-internal-routing": "Public",
+      "x-workday-internal-protected-usage-enabled": false,
+      "x-workday-internal-service-container-id": "ba74f44bc90e107329f638ba9689003b",
+      "x-ibm-annotations": "1.0.0",
+      "x-ibm-application-name": "JC - Watsonx Orchestrate Workday API",
+      "x-ibm-application-id": "JC-Watsonx-Orchestrate-Workday-API",
+      "x-ibm-disable-default-server-url": true,
+      "x-ibm-application-icon": "<placeholder_icon>",
+      "contact": {
+        "name": "Joe Cosenza",
+        "email": "jcosenz@us.ibm.com",
+        "url": "https://ibm-client-engineering.github.io/solution-wxo/workday"
+      }
+    },
+    "paths": {
+      "/api/timeTracking/v3/ibmsrv_dpt1/workers": {
+        "get": {
+          "summary": "Get Workday workers",
+          "description": "Retrieves a collection of workers and current staffing information.",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Enter a worker's name to search, or leave blank to retrieve all (limit of 100 responses)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "x-ibm-order": 1
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "The maximum number of workers in a single response. Default is 100.",
+              "schema": {
+                "type": "integer",
+                "format": "int64",
+                "default": 100
+              },
+              "x-ibm-order": 2,
+              "x-ibm-show": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "All workers retrieved successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "title": "Workers",
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "workerId": {
+                              "type": "string",
+                              "title": "Employee ID",
+                              "x-ibm-order": 2
+                            },
+                            "descriptor": {
+                              "type": "string",
+                              "title": "Employee Name",
+                              "x-ibm-order": 1
+                            },
+                            "person": {
+                              "type": "object",
+                              "properties": {
+                                "phone": {
+                                  "type": "string",
+                                  "title": "Phone"
+                                },
+                                "email": {
+                                  "type": "string",
+                                  "title": "Email"
+                                },
+                                "id": {
+                                  "type": "string",
+                                  "title": "ID"
+                                }
+                              },
+                              "title": "Contact Information - Public",
+                              "x-ibm-order": 3,
+                              "x-ibm-show": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "x-ibm-response-property": "data"
+                }
+              }
+            }
+          },
+          "x-workday-internal-try-enabled": true,
+          "operationId": "WISgetWorkers",
+          "x-ibm-visible": true,
+          "x-ibm-nl-intent-examples": [
+            "Get all workers",
+            "Fetch all workers",
+            "Retrieve all workers"
+          ],
+          "security": [
+            {
+              "oAuth2Implicit": []
+            }
+          ]
+        }
+      },
+      "/api/person/v4/ibmsrv_dpt1/people/{ID}": {
+        "get": {
+          "tags": ["people"],
+          "summary": "Get a person",
+          "description": "Retrieve a person's information from Workday.",
+          "parameters": [
+            {
+              "name": "ID",
+              "in": "path",
+              "description": "The Workday ID of the resource.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Person retrieved successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "photos": {
+                        "type": "string"
+                      },
+                      "homeEmails": {
+                        "type": "string"
+                      },
+                      "personalInformation": {
+                        "type": "string"
+                      },
+                      "homeWebAddresses": {
+                        "type": "string"
+                      },
+                      "universal_ID": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "workInstantMessengers": {
+                        "type": "string"
+                      },
+                      "homePhones": {
+                        "type": "string"
+                      },
+                      "preferredName": {
+                        "type": "string"
+                      },
+                      "workEmails": {
+                        "type": "string"
+                      },
+                      "workAddresses": {
+                        "type": "string"
+                      },
+                      "workWebAddresses": {
+                        "type": "string"
+                      },
+                      "homeAddresses": {
+                        "type": "string"
+                      },
+                      "audioNamePronunciation": {
+                        "type": "string"
+                      },
+                      "legalName": {
+                        "type": "string"
+                      },
+                      "socialNetworks": {
+                        "type": "string"
+                      },
+                      "workPhones": {
+                        "type": "string"
+                      },
+                      "additionalNames": {
+                        "type": "string"
+                      },
+                      "homeInstantMessengers": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "href": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-ibm-response-property": "data"
+                }
+              }
+            }
+          },
+          "x-workday-internal-try-enabled": true,
+          "operationId": "WISgetPerson",
+          "x-ibm-visible": true,
+          "security": [
+            {
+              "oAuth2Implicit": []
+            }
+          ],
+          "x-ibm-nl-intent-examples": [
+            "Get all people",
+            "Fetch all people",
+            "Retrieve all people"
+          ]
+        }
+      },
+      "/api/person/v4/ibmsrv_dpt1/homeContactInformationChanges/{ID}": {
+        "get": {
+          "tags": ["homeContactInformationChanges"],
+          "summary": "Return a home contact change event.",
+          "description": "Returns basic information about the home contact change event.",
+          "parameters": [
+            {
+              "name": "ID",
+              "in": "path",
+              "description": "The Workday ID of the resource.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return home contact change event successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "businessProcessParameters": {
+                        "type": "object",
+                        "properties": {
+                          "action": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                              },
+                              "descriptor": {
+                                "type": "string"
+                              },
+                              "href": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "overallBusinessProcess": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                              },
+                              "descriptor": {
+                                "type": "string"
+                              },
+                              "href": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "comment": {
+                            "type": "string"
+                          },
+                          "comments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "commentDate": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "comment": {
+                                  "type": "string"
+                                },
+                                "person": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                                    },
+                                    "descriptor": {
+                                      "type": "string"
+                                    },
+                                    "href": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "transactionStatus": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                              },
+                              "descriptor": {
+                                "type": "string"
+                              },
+                              "href": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "warningValidations": {
+                            "type": "string"
+                          },
+                          "attachments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "description": {
+                                  "type": "string"
+                                },
+                                "contentType": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                                    },
+                                    "descriptor": {
+                                      "type": "string"
+                                    },
+                                    "href": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "fileLength": {
+                                  "type": "string"
+                                },
+                                "uploadDate": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "fileName": {
+                                  "type": "string"
+                                },
+                                "uploadedBy": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                                    },
+                                    "descriptor": {
+                                      "type": "string"
+                                    },
+                                    "href": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "category": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                                    },
+                                    "descriptor": {
+                                      "type": "string"
+                                    },
+                                    "href": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "overallStatus": {
+                            "type": "string"
+                          },
+                          "criticalValidations": {
+                            "type": "string"
+                          },
+                          "for": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^(?:(?:[0-9a-f]{32})|(?:[0-9]+\\$[0-9]+)|(\\S+=\\S+))$"
+                              },
+                              "descriptor": {
+                                "type": "string"
+                              },
+                              "href": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "descriptor": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-ibm-response-property": "data"
+                }
+              }
+            }
+          },
+          "x-workday-internal-try-enabled": true,
+          "operationId": "WISgethomeContactInformationChanges",
+          "x-ibm-visible": true,
+          "security": [
+            {
+              "oAuth2Implicit": []
+            }
+          ],
+          "x-ibm-nl-intent-examples": [
+            "Return a home contact change event."
+          ]
+        }
+      }
+    },
+    "servers": [
+      {
+        "url": "https://wd2-impl-services1.workday.com/ccx/"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "oAuth2Implicit": {
+          "type": "oauth2",
+          "x-ibm-visible": true,
+          "flows": {
+            "implicit": {
+              "authorizationUrl": "https://impl.workday.com/wday/authgwy/ibmsrv_dpt1/authorize",
+              "scopes": {}
+            }
+          }
+        }
+      }
+    }
+  }  

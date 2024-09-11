@@ -1,0 +1,39 @@
+---
+id: auth
+sidebar_position: 3
+title: Authentication
+---
+
+## Authenticating to Watsonx
+The Watsonx API requires bearer authentication.
+
+### Create an IBM Cloud API Key
+1. In the IBM Cloud console, go to Manage > Access (IAM) > API keys
+2. Click Create an IBM Cloud API key
+3. Enter a name and description for your API key
+4. Click Create
+5. Click Show to display the API key. Or, click Copy to copy and save it for later, or click Download
+
+[IBM Cloud Reference](https://cloud.ibm.com/docs/account?topic=account-userapikey&interface=ui#create_user_key)
+### Generate and obtain your bearer token
+Run the following curl command in your Windows command prompt or Mac terminal, and replace `<your API key>` with your API key.
+```html
+curl -X POST 'https://iam.cloud.ibm.com/identity/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=<your API key>'
+```
+[IBM Cloud Reference](https://cloud.ibm.com/docs/account?topic=account-iamtoken_from_apikey)
+
+Running the command will give you a response similar to below:
+```yaml
+{
+  "access_token": "eyJhbGciOiJIUz......sgrKIi8hdFs",
+  "refresh_token": "SPrXw5tBE3......KBQ+luWQVY=",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "expiration": 1473188353
+}
+```
+The value you need to capture is the `access_token` value between the quotations. Copy this value and this is your bearer token to connect the application in Watsonx Orchestrate.
+
+:::tip
+IBM Cloud Bearer tokens expire frequently. Be sure to have this command handy if the token expires and reconnect the skill. The error details from Watsonx Orchestrate will tell you if it's because of an expired bearer token.
+:::

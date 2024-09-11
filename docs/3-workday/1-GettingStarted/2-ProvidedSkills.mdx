@@ -1,0 +1,155 @@
+---
+id: skills
+sidebar_position: 2
+title: Provided Skills
+---
+
+## Send a prompt to Watsonx Prompt Lab
+
+Sends a prompt to a Watsonx project Prompt Lab
+
+WXO name "JC - Send a prompt to Watsonx Prompt Lab"
+
+[IBM OpenAPI Specification Reference](https://github.com/jcosenz/assistant-toolkit/blob/02396cc80d3b3aae3822915957b6a8bbf0ed991f/integrations/extensions/starter-kits/language-model-watsonx/watsonx-openapi.json)
+
+### Input Parameters
+
+#### User visible and required
+<details>
+<summary><b>Watsonx Orchestrate User Input</b></summary>
+
+Multiline input of the prompt from Watsonx Orchestrate user sends to the Prompt Lab. Default parameter and text to be displayed on Watsonx Orchestrate is "Enter your prompt here. Be specific to what you want Watsonx AI to do!" to guide the user's input.
+
+</details>
+#### Disabled user visibility but required
+Requires modification to specify the Watsonx Project
+<details>
+<summary><b>Watsonx Project ID</b></summary>
+
+Hard-coded project ID in the yaml of the Watsonx project. 
+
+</details>
+#### Required but only visible if the user selects (show more fields)
+The script determines the default values for the following
+<details>
+<summary><b>Foundation Model</b></summary>
+
+The ID of the AI model to be used. The yaml currently only allows for the model choices below.
+
+:::tip
+If you are modifying this script for a specific purpose, use a default or allow for only a specific set of AI models that works best for your skill's purpose. For example, if you are modifying this skill to do something specific like "summarize this text" select one of the IBM instruct models or a Google flan model as opposed to a chat or coding model.
+:::
+
+Select a model that best fits your needs. All models support English text. Check the model information for other supported languages. The default value for this parameter is set to "bigscience/mt0-xxl-13b"
+            
+            - The Granite series of models are a family of IBM-trained decoder-only models used for text generation, summarization, question and answer, classification, and extraction.
+                - granite-13b-chat-v1
+                - granite-13b-chat-v2
+                - granite-13b-instruct-v1
+                - granite-13b-instruct-v2
+
+            - Non IBM Models
+
+                :::warning Disclaimer
+                These models are a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx
+                :::
+
+                - flan-ul2-20b
+                  - An encoder decoder model based on the T5 architecture and instruction-tuned using the Fine-tuned Language Net.
+                - flan-t5-xxl-11b
+                  - An 11 billion parameter model based on the Flan-T5 family.
+                - flan-t5-xl-3b
+                  - A pretrained T5 - an encoder-decoder model pre-trained on a mixture of supervised / unsupervised tasks converted into a text-to-text format.
+                - starcoder-15.5b
+                  - The StarCoder models are 15.5B parameter models that can generate code from natural language descriptions.
+                - mt0-xxl-13b
+                  - An instruction-tuned iteration on mT5.
+                - gpt-neox-20b
+                  - A 20 billion parameter autoregressive language model trained on the Pile.
+                - mpt-7b-instruct2
+                  - A decoder-style transformer pretrained from scratch on 1T tokens of English text and code. This model was trained by IBM.
+                - llama-2-13b-chat
+                  - An auto-regressive language model that uses an optimized transformer architecture.
+                - llama-2-70b-chat
+                  - An auto-regressive language model that uses an optimized transformer architecture.
+
+</details>
+
+<details>
+<summary><b>Minimum New Tokens</b></summary>
+
+Define the minimum number of tokens to generate. The default value for this parameter is set to null.
+
+:::tip
+If the response is too short or too long for the prompt, modify the minimum amount of tokens to help guide the response. By default this should be set to null so the AI model determines the length. Some models (like IBM's Instruct models) however require help from this input.
+:::
+
+</details>
+<details>
+<summary><b>Maximum New Tokens</b></summary>
+
+Define the maximum number of tokens to generate. The default value for this parameter is set to 700.
+
+:::tip
+This is typically determined by the ammount of tokens you have in Watsonx. Set this to a maximum allowable amount per your Watsonx instance unless you're concerned with token usage.
+:::
+</details>
+<details>
+<summary><b>Repetition Penalty</b></summary>
+
+Define the penalty for repetition. A value between 1.00 and 2.00. 1.00 means no penalty. The default value for this parameter is set to 2.00 for better response readability.
+
+</details>
+<details>
+<summary><b>Stop Sequences (Non Functional)</b></summary>
+
+:::danger
+This parameter does not function properly in Watsonx Orchestrate. Watsonx Orchestrate is unable to allow for input parameters of type array without specifying items. If we specify the array items (whether as each as empty strings or null) passes a non-null array which causes an error on Watsonx. Therefore we are unable to pass this array parameter as null while giving the user the opportunity to provide an input.
+:::
+Stop sequences are one or more strings which will cause the text generation to stop if/when they are produced as part of the output. Stop sequences encountered prior to the minimum number of tokens being generated will be ignored. Values are inputed by the user as array values. The default value for this parameter is set to null.
+</details>
+<details>
+<summary><b>Decoding Method</b></summary>
+
+Define the decoding method. The selections are "greedy" or "sampling". The default value for this parameter is set to "greedy".
+- Set decoding to "greedy" to always select words with the highest probability
+- Set decoding to "sample" to customize the variability of word selection
+    - Using Sampling, you can set the Temperature, Top K and Top P values (below)
+</details>
+##### Sampling Parameters
+<details>
+<summary><b>Temperature</b></summary>
+
+:::warning
+This parameter is only utilized when "sampling" is the selected decoding method.
+:::
+Control the creativity of generated text. A value between 0.00 and 2.00 Higher values will lead to more randomly generated outputs. The default value for this parameter is set to null.
+
+</details>
+<details>
+<summary><b>Top K</b></summary>
+
+:::warning
+This parameter is only utilized when "sampling" is the selected decoding method
+:::
+Set the number of highest probability tokens to keep for top-k filtering. A value between 0 and 100. Lower values make it less likely the model will go off topic. The default value for this parameter is set to null.
+
+</details>
+<details>
+<summary><b>Top P</b></summary>
+
+:::warning
+This parameter is only utilized when "sampling" is the selected decoding method
+:::
+Set the nucleus sampling (top p). If < 1.0, only the smallest set of probable tokens with probabilities that add up to "top-p" or higher are used. The default value for this parameter is set to null.
+
+</details>
+<details>
+<summary><b>Random Seed</b></summary>
+
+:::warning
+This parameter is only utilized when "sampling" is the selected decoding method
+:::
+Input a number that controls the random sampling of the generated tokens when sampling is enabled. Setting the random seed to the same number for each generation ensures experimental repeatability. The default value for this parameter is set to null.
+
+</details>
