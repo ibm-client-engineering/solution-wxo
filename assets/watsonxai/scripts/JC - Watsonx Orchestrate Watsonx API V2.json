@@ -1,0 +1,247 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "JC - Watsonx API",
+    "contact": {
+      "name": "Joe Cosenza",
+      "email": "jcosenz@us.ibm.com",
+      "url": "https://ibm-client-engineering.github.io/solution-wxo/watsonx"
+    },
+    "x-ibm-application-name": "JC - Watsonx API",
+    "x-ibm-application-id": "JC-WatsonxAPI",
+    "description": "Allows you to send API calls to Watsonx",
+    "x-ibm-application-icon": "<svg width=\"30\" height=\"30\" id=\"Layer_1\" data-name=\"Layer 1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 400 360\"><defs><style>.cls-1{fill:#f8b500;}.cls-2{fill:#231815;}</style></defs><title>JRK number</title><path class=\"cls-1\" d=\"M354.6,295.5H39.4A39.4,39.4,0,0,1,0,256.1V39.4A39.4,39.4,0,0,1,39.4,0H354.6A39.4,39.4,0,0,1,394,39.4V256.1a39.4,39.4,0,0,1-39.4,39.4\"/><path class=\"cls-2\" d=\"M105.85,44.44h45.42V171.75c0,57.37-27.49,77.4-71.72,77.4-10.46,0-24.21-1.8-33.17-4.78l5.08-36.76a74.94,74.94,0,0,0,23.31,3.58c19.12,0,31.08-8.66,31.08-40Z\"/><path class=\"cls-2\" d=\"M337.15,240.18c-8.37,4.19-27.19,8.67-51.7,8.67C215.82,248.85,180,205.52,180,148.14c0-68.74,49-107,110-107,23.6,0,41.53,4.78,49.6,9l-9.26,36.16A98.32,98.32,0,0,0,292,78.81c-36.16,0-64.25,21.81-64.25,66.64,0,40.34,23.9,65.74,64.55,65.74,13.74,0,29-3,37.95-6.57Z\"/></svg>",
+    "version": "latest"
+  },
+  "externalDocs": {
+    "url": "https://cloud.ibm.com/apidocs/watson-data-api#connections"
+  },
+  "servers": [
+    {
+      "url": "https://us-south.ml.cloud.ibm.com/ml/v1"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/text/generation": {
+      "post": {
+        "summary": "JC - Send a prompt to Watsonx Prompt Lab",
+        "description": "Send a prompt to Watsonx Prompt Lab",
+        "operationId": "sendPrompt",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-05-29"
+            },
+            "description": "API version to use."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "IBM Cloud Pak Bearer Access Token"
+      }
+    },
+    "schemas": {
+      "requestBody": {
+        "type": "object",
+        "required": [
+          "input"
+        ],
+        "properties": {
+          "project_id": {
+            "x-ibm-disable": true,
+            "x-ibm-show": false,
+            "type": "string",
+            "default": "a64d4055-84c2-44df-9ac0-dec716e50e99"
+          },
+          "model_id": {
+            "x-ibm-label": "Foundation Model",
+            "description": "Select a model that best fits your needs. All models support English text. Check the model information for other supported languages.",
+            "type": "string",
+            "example": "meta-llama/llama-3-70b-instruct",
+            "enum": [
+              "google/flan-ul2",
+              "google/flan-t5-xxl",
+              "google/flan-t5-xl",
+              "bigcode/starcoder",
+              "bigscience/mt0-xxl",
+              "eleutherai/gpt-neox-20b",
+              "ibm/granite-13b-chat-v1",
+              "ibm/granite-13b-chat-v2",
+              "ibm/granite-13b-instruct-v1",
+              "ibm/granite-13b-instruct-v2",
+              "ibm/mpt-7b-instruct2",
+              "meta-llama/llama-2-13b-chat",
+              "meta-llama/llama-2-70b-chat"
+            ]
+          },
+          "input": {
+            "type": "string",
+            "x-ibm-multiline": true,
+            "x-ibm-label": "Watsonx AI Prompt",
+            "example": "Based on the following table column names and table schema: \ntable_name: EMPLOYEE\ncolumns:\n - name: employee_id\n - name: first_name\n - name: last_name\n - name: email\n - name: phone_number\n - name: hire_date\n - name: job_id\n - name: salary\n - name: manager_id\n - name: department_id \n\n Generate an SQL query \n\nQuestions: \n\nInput: get email address for Tom Smith\nOutput:"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/parameters"
+          },
+          "moderations": {
+            "type": "object",
+            "properties": {
+              "hap": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "threshold": {
+                        "type": "number",
+                        "format": "float",
+                        "default": 0.5
+                      },
+                      "mask": {
+                        "type": "object",
+                        "properties": {
+                          "remove_entity_value": {
+                            "type": "boolean",
+                            "default": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "output": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "threshold": {
+                        "type": "number",
+                        "format": "float",
+                        "default": 0.5
+                      },
+                      "mask": {
+                        "type": "object",
+                        "properties": {
+                          "remove_entity_value": {
+                            "type": "boolean",
+                            "default": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "response": {
+        "description": "Successful response",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "x-ibm-multiline": true,
+            "x-ibm-label": "Generated Text"
+          }
+        }
+      },
+      "errorResponse": {
+        "description": "Error response",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "status": {
+            "type": "string",
+            "description": "Error code"
+          }
+        }
+      }
+    }
+  }
+}
