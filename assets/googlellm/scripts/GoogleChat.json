@@ -1,0 +1,193 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Gemini Chat API",
+      "version": "1.0.0",
+      "description": "API for generating content using the Gemini 1.5 model.",
+      "contact": {
+        "name": "Joe Cosenza",
+        "email": "jcosenz@us.ibm.com"
+      },
+      "x-ibm-application-name": "Gemini Chat API",
+      "x-ibm-application-id": "Gemini Chat API",
+      "x-ibm-application-icon": "<svg width=\"30\" height=\"30\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z\" fill=\"url(#prefix__paint0_radial_980_20147)\"/><defs><radialGradient id=\"prefix__paint0_radial_980_20147\" cx=\"0\" cy=\"0\" r=\"1\" gradientUnits=\"userSpaceOnUse\" gradientTransform=\"matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)\"><stop offset=\".067\" stop-color=\"#9168C0\"/><stop offset=\".343\" stop-color=\"#5684D1\"/><stop offset=\".672\" stop-color=\"#1BA1E3\"/></radialGradient></defs></svg>"
+    },
+    "servers": [
+      {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models"
+      }
+    ],
+    "paths": {
+      "/gemini-1.5-flash-latest:generateContent": {
+        "post": {
+          "summary": "Generate content using the Gemini 1.5 model",
+          "description": "Generate content using the Gemini 1.5 model",
+          "operationId": "generateGeminiContent",
+          "security": [
+            {
+              "apiKey": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parts": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "text": {
+                                  "type": "string",
+                                  "example": "Explain how AI works"
+                                }
+                              },
+                              "required": [
+                                "text"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "generation_config": {
+                      "type": "object",
+                      "properties": {
+                        "temperature": {
+                          "type": "number",
+                          "format": "float",
+                          "default": 0.4
+                        },
+                        "top_p": {
+                          "type": "number",
+                          "format": "float",
+                          "default": 1
+                        },
+                        "top_k": {
+                          "type": "integer",
+                          "default": 32
+                        },
+                        "max_output_tokens": {
+                          "type": "integer",
+                          "default": 2048
+                        }
+                      },
+                      "example": {
+                        "temperature": 0.4,
+                        "top_p": 1,
+                        "top_k": 32,
+                        "max_output_tokens": 2048
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "candidates": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "content": {
+                              "type": "object",
+                              "properties": {
+                                "parts": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "text": {
+                                        "type": "string",
+                                        "example": "## How AI Works: A Simplified Explanation\n\nArtificial intelligence (AI) is a broad field that encompasses various techniques and approaches. However, at its core, AI aims to create systems that can **mimic human intelligence** by performing tasks that typically require human cognitive abilities. \n\nHere's a simplified breakdown of how AI works:\n\n**1. Data is the Fuel:** AI systems learn from vast amounts of data. This data can be structured (like spreadsheets) or unstructured (like images, text, or audio). The more data, the better the AI system can learn and perform its tasks.\n\n**2. Algorithms are the Engine:** AI systems use algorithms, which are sets of instructions, to process and analyze the data. These algorithms are designed to identify patterns, make predictions, and solve problems.\n\n**3. Learning is the Process:** AI systems learn from the data they are fed through different learning methods:\n\n    * **Supervised Learning:** The system is trained on labeled data, where each input has a corresponding output. For example, training an image recognition system by showing it pictures of cats labeled \"cat\" and dogs labeled \"dog\".\n    * **Unsupervised Learning:** The system learns from unlabeled data, discovering patterns and relationships on its own. For example, grouping customers based on their purchase history.\n    * **Reinforcement Learning:** The system learns through trial and error, receiving rewards for desired actions and penalties for undesired ones. For example, training a robot to navigate a maze by rewarding it for reaching the goal and penalizing it for hitting walls.\n\n**4. Output is the Result:** Once trained, AI systems can perform tasks based on the learned patterns and knowledge. This can include:\n\n    * **Predicting outcomes:** Forecasting weather patterns, predicting customer behavior, or identifying potential fraud.\n    * **Making decisions:** Automating tasks like customer service chatbots, self-driving cars, or medical diagnosis.\n    * **Creating content:** Generating text, images, or music.\n\n**5. Continuous Improvement:** AI systems are constantly being improved through ongoing learning and feedback. As they encounter new data and situations, they adapt and refine their algorithms to become more accurate and efficient.\n\n**Important Note:** AI is not a single technology but a collection of techniques. Different AI systems use different algorithms and learning methods depending on their specific purpose.\n\n**Examples of AI in Action:**\n\n* **Siri and Alexa:** Voice assistants that use natural language processing to understand and respond to your requests.\n* **Netflix Recommendations:** AI algorithms analyze your viewing history to suggest movies and shows you might like.\n* **Spam Filters:** AI systems identify and filter out spam emails based on patterns in the content and sender information.\n* **Self-Driving Cars:** AI systems analyze data from sensors and cameras to navigate roads, avoid obstacles, and make driving decisions.\n\nAI is a rapidly evolving field with immense potential to transform various aspects of our lives. Understanding the basic principles of how AI works can help us appreciate its capabilities and navigate the ethical considerations surrounding its development and deployment.\n"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "finishReason": {
+                              "type": "string",
+                              "example": "STOP"
+                            },
+                            "index": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "safetyRatings": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "category": {
+                                    "type": "string",
+                                    "example": "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+                                  },
+                                  "probability": {
+                                    "type": "string",
+                                    "example": "NEGLIGIBLE"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "usageMetadata": {
+                        "type": "object",
+                        "properties": {
+                          "promptTokenCount": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "candidatesTokenCount": {
+                            "type": "integer",
+                            "example": 631
+                          },
+                          "totalTokenCount": {
+                            "type": "integer",
+                            "example": 635
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKey": {
+              "type": "apiKey",
+              "in": "query",
+              "name": "key"
+        }
+      }
+    }
+  }
